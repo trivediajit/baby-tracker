@@ -1,0 +1,9 @@
+{
+  "name": "LittleSteps Newborn Tracker",
+  "short_name": "LittleSteps",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#f43f5e",
+  "description": "Shared Mom & Dad Newborn Feeding, Nappy, Milestone & Immunization Tracker"
+}
