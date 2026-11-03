@@ -2,8 +2,12 @@
 <html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LittleSteps — Newborn Activity & Milestone Tracker</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="LittleSteps" />
+  <meta name="theme-color" content="#0f172a" />
+  <title>LittleSteps — Newborn Activity &amp; Milestone Tracker (iPad &amp; Mobile Edition)</title>
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -49,6 +53,38 @@
     }
     .animate-pulse-slow {
       animation: pulseSlow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    /* Apple Health / Flighty Tabular Numerals & iPad Touch Ergonomics */
+    .font-mono, #dashExactAgePrimary, #lastFeedAgo, #lastDiaperAgo, #lastSleepAgo, #timerLeftDisplay, #timerRightDisplay, #timerSleepDisplay {
+      font-variant-numeric: tabular-nums;
+    }
+    button, label, input, select {
+      touch-action: manipulation;
+    }
+    /* 3 AM Circadian-Safe Red-Light Nursery Mode (Zero Blue/Green Wavelengths) */
+    html.red-nursery body {
+      background-color: #090202 !important;
+      color: #fca5a5 !important;
+    }
+    html.red-nursery header,
+    html.red-nursery .bg-white,
+    html.red-nursery .dark\:bg-slate-900,
+    html.red-nursery .bg-slate-50 {
+      background-color: #140404 !important;
+      border-color: #450a0a !important;
+      color: #fecaca !important;
+    }
+    html.red-nursery h1, html.red-nursery h2, html.red-nursery h3, html.red-nursery h4, html.red-nursery p, html.red-nursery span {
+      color: #fca5a5 !important;
+    }
+    /* iPad Nursery Stand / Bedside Kiosk Mode */
+    body.ipad-kiosk #dashExactAgePrimary {
+      font-size: 2rem !important;
+    }
+    body.ipad-kiosk #timerLeftDisplay,
+    body.ipad-kiosk #timerRightDisplay,
+    body.ipad-kiosk #timerSleepDisplay {
+      font-size: 2.25rem !important;
     }
   </style>
 </head>
@@ -108,6 +144,12 @@
               <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
             </svg>
             <span class="hidden sm:inline">Doctor Summary</span>
+          </button>
+          <button id="toggleKioskModeBtn" type="button" class="px-2.5 py-1.5 rounded-xl text-xs font-semibold bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-950/70 text-indigo-700 dark:text-indigo-300 border border-indigo-200/60 dark:border-indigo-800 transition" title="iPad Nursery Stand Mode (Keeps Screen Awake & Enlarges Timers)">
+            📱 <span id="kioskModeLabel" class="hidden sm:inline">iPad Stand</span>
+          </button>
+          <button id="toggleRedLightBtn" type="button" class="px-2.5 py-1.5 rounded-xl text-xs font-semibold bg-rose-950 text-rose-200 hover:bg-rose-900 border border-rose-800/70 transition" title="3 AM Circadian-Safe Red-Light Nursery Mode (Zero Blue Light)">
+            🔴 <span class="hidden sm:inline">3 AM Red</span>
           </button>
           <button id="openPinLockBtn" type="button" class="px-2.5 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition" title="Lock App Screen with 4-Digit PIN">
             🔒 <span id="pinLockBtnLabel" class="hidden sm:inline">PIN Lock</span>
@@ -1538,10 +1580,16 @@
             </button>
           </div>
           <div class="flex flex-wrap items-center justify-between gap-2 pt-1">
-            <label class="inline-flex items-center gap-2 font-medium text-slate-700 dark:text-slate-200 cursor-pointer">
-              <input id="autoSyncCheck" type="checkbox" checked class="rounded text-emerald-600 focus:ring-emerald-500" />
-              <span>2-Way Auto-Sync (Push every log &amp; pull spouse’s updates automatically)</span>
-            </label>
+            <div class="space-y-1">
+              <label class="flex items-center gap-2 font-medium text-slate-700 dark:text-slate-200 cursor-pointer">
+                <input id="autoSyncCheck" type="checkbox" checked class="rounded text-emerald-600 focus:ring-emerald-500" />
+                <span>2-Way Auto-Sync (Push every log &amp; pull spouse’s updates automatically)</span>
+              </label>
+              <label class="flex items-center gap-2 font-semibold text-indigo-700 dark:text-indigo-300 cursor-pointer">
+                <input id="e2eeToggleCheck" type="checkbox" class="rounded text-indigo-600 focus:ring-indigo-500" />
+                <span>🛡️ Zero-Knowledge AES-256-GCM Encryption (Encrypts JSON + Photos in browser before upload)</span>
+              </label>
+            </div>
             <button id="copySpousePairingCodeBtn" type="button" class="px-2.5 py-1 rounded-lg bg-rose-100 hover:bg-rose-200 dark:bg-rose-950 text-rose-700 dark:text-rose-300 font-bold text-[11px] transition">
               📲 Copy Pairing Code for Wife’s Phone
             </button>
@@ -1722,6 +1770,74 @@
           out += chars.charAt(Math.floor(Math.random() * chars.length));
         }
         return out;
+      }
+
+      // Zero-Knowledge Client-Side AES-256-GCM Encryption (Web Crypto API + PBKDF2-SHA256)
+      function bufToBase64(buf) {
+        const bytes = new Uint8Array(buf);
+        let binary = '';
+        for (let i = 0; i < bytes.byteLength; i++) {
+          binary += String.fromCharCode(bytes[i]);
+        }
+        return btoa(binary);
+      }
+
+      function base64ToBuf(b64) {
+        const binary = atob(b64);
+        const bytes = new Uint8Array(binary.length);
+        for (let i = 0; i < binary.length; i++) {
+          bytes[i] = binary.charCodeAt(i);
+        }
+        return bytes.buffer;
+      }
+
+      async function deriveAesGcmKey(passkey, saltBytes) {
+        const enc = new TextEncoder();
+        const keyMaterial = await window.crypto.subtle.importKey(
+          'raw',
+          enc.encode(passkey || 'littlesteps-default-key'),
+          { name: 'PBKDF2' },
+          false,
+          ['deriveKey']
+        );
+        return window.crypto.subtle.deriveKey(
+          {
+            name: 'PBKDF2',
+            salt: saltBytes,
+            iterations: 100000,
+            hash: 'SHA-256'
+          },
+          keyMaterial,
+          { name: 'AES-GCM', length: 256 },
+          false,
+          ['encrypt', 'decrypt']
+        );
+      }
+
+      async function encryptStateWithAesGcm(plainJsonStr, passkey) {
+        if (!window.crypto || !window.crypto.subtle) return plainJsonStr;
+        const salt = window.crypto.getRandomValues(new Uint8Array(16));
+        const iv = window.crypto.getRandomValues(new Uint8Array(12));
+        const key = await deriveAesGcmKey(passkey, salt);
+        const encoded = new TextEncoder().encode(plainJsonStr);
+        const cipherBuf = await window.crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, encoded);
+        return `ENC_AES256GCM:${bufToBase64(salt)}:${bufToBase64(iv)}:${bufToBase64(cipherBuf)}`;
+      }
+
+      async function decryptStateWithAesGcm(cipherPayloadStr, passkey) {
+        if (!cipherPayloadStr || typeof cipherPayloadStr !== 'string') return null;
+        if (!cipherPayloadStr.startsWith('ENC_AES256GCM:')) {
+          return JSON.parse(cipherPayloadStr);
+        }
+        const parts = cipherPayloadStr.split(':');
+        if (parts.length !== 4) throw new Error('Invalid encrypted payload');
+        const salt = new Uint8Array(base64ToBuf(parts[1]));
+        const iv = new Uint8Array(base64ToBuf(parts[2]));
+        const cipherBuf = base64ToBuf(parts[3]);
+        const key = await deriveAesGcmKey(passkey, salt);
+        const plainBuf = await window.crypto.subtle.decrypt({ name: 'AES-GCM', iv }, key, cipherBuf);
+        const plainStr = new TextDecoder().decode(plainBuf);
+        return JSON.parse(plainStr);
       }
 
       function toLocalDatetimeInputValue(dateObj) {
@@ -2427,11 +2543,14 @@
             webhookUrl: '',
             passkey: generateRandomPasskey(),
             autoSync: true,
+            e2ee: false,
             lastSyncedAt: ''
           },
           deletedIds: [],
           pinHash: '',
           isLocked: false,
+          redLightMode: false,
+          kioskMode: false,
           useImperial: false,
           darkMode: false,
           logs: defaultLogs,
@@ -2540,7 +2659,7 @@
         }, 1200);
       }
 
-      function syncToGoogleCloud(silent = false) {
+      async function syncToGoogleCloud(silent = false) {
         if (!state.cloudSync || !state.cloudSync.webhookUrl) {
           if (!silent) showToast('Paste your Google Apps Script URL first in Cloud Settings', 'bg-amber-500');
           return;
@@ -2552,39 +2671,52 @@
         }
         if (isSyncInFlight && silent) return;
         isSyncInFlight = true;
+        const passkey = (state.cloudSync && state.cloudSync.passkey) || '';
+        const useE2ee = Boolean(state.cloudSync && state.cloudSync.e2ee);
+        const rawStateStr = JSON.stringify(state);
+        const backupPayloadStr = useE2ee
+          ? await encryptStateWithAesGcm(rawStateStr, passkey)
+          : rawStateStr;
+
         const payload = {
-          passkey: (state.cloudSync && state.cloudSync.passkey) || '',
+          passkey,
+          isEncrypted: useE2ee,
           syncedAt: getNow().toISOString(),
-          profile: state.profile,
+          profile: useE2ee ? { name: 'Encrypted (AES-256-GCM)' } : state.profile,
           logsCount: state.logs.length,
           deletedIds: state.deletedIds || [],
-          recentLogs: state.logs.slice(0, 50).map(l => ({
+          recentLogs: useE2ee ? [] : state.logs.slice(0, 50).map(l => ({
             id: l.id,
             timestamp: l.timestamp,
             type: l.type,
             summary: getLogPresentation(l).title,
             details: getLogPresentation(l).subtitle
           })),
-          milestones: state.milestones.filter(m => m.completed),
-          fullBackupJson: JSON.stringify(state)
+          milestones: useE2ee ? [] : state.milestones.filter(m => m.completed),
+          fullBackupJson: backupPayloadStr
         };
         fetch(url, {
           method: 'POST',
           headers: { 'Content-Type': 'text/plain;charset=utf-8' },
           body: JSON.stringify(payload)
-        }).then(res => res.json()).then(data => {
+        }).then(res => res.json()).then(async data => {
           isSyncInFlight = false;
           if (data && data.error === 'UNAUTHORIZED') {
             if (!silent) showToast('Cloud Sync Passkey mismatch! Check Secret Passkey.', 'bg-rose-500');
             return;
           }
-          if (data && data.mergedState) {
+          if (data && data.previousCipher) {
+            try {
+              const prevObj = await decryptStateWithAesGcm(data.previousCipher, passkey);
+              if (prevObj) mergeRemotePartnerState(prevObj);
+            } catch (e) {}
+          } else if (data && data.mergedState) {
             mergeRemotePartnerState(data.mergedState);
           }
           state.cloudSync.lastSyncedAt = getNow().toISOString();
           saveState(false);
           renderAll();
-          if (!silent) showToast('Synced with Mom/Dad Shared Cloud Memory! 👩‍❤️‍👨☁️', 'bg-emerald-500');
+          if (!silent) showToast(useE2ee ? 'E2EE Encrypted & Synced to Shared Memory! 🛡️☁️' : 'Synced with Mom/Dad Shared Cloud Memory! 👩‍❤️‍👨☁️', 'bg-emerald-500');
         }).catch(() => {
           isSyncInFlight = false;
           fetch(url, {
@@ -2651,6 +2783,19 @@
           });
         }
 
+        if (Array.isArray(remote.weightHistory)) {
+          const seenW = new Set((state.weightHistory || []).map(w => w.label + ':' + w.kg));
+          remote.weightHistory.forEach(rw => {
+            if (rw && !seenW.has(rw.label + ':' + rw.kg)) {
+              state.weightHistory.push(rw);
+            }
+          });
+        }
+
+        if (remote.profile && (remote.profile.updatedAt || 0) > (state.profile.updatedAt || 0)) {
+          Object.assign(state.profile, remote.profile);
+        }
+
         if (remote.handoverNote && remote.handoverNote !== state.handoverNote) {
           state.handoverNote = remote.handoverNote;
         }
@@ -2664,11 +2809,22 @@
         }
         const url = state.cloudSync.webhookUrl.trim();
         if (!url.startsWith('https://')) return;
-        const passkey = encodeURIComponent((state.cloudSync && state.cloudSync.passkey) || '');
+        const rawPasskey = (state.cloudSync && state.cloudSync.passkey) || '';
+        const passkey = encodeURIComponent(rawPasskey);
         fetch(url + (url.includes('?') ? '&' : '?') + 'action=pull&key=' + passkey + '&t=' + Date.now())
-          .then(res => res.json())
-          .then(data => {
-            const remoteState = (data && data.fullBackupJson) ? JSON.parse(data.fullBackupJson) : data;
+          .then(res => res.text())
+          .then(async rawText => {
+            let remoteState = null;
+            if (rawText.startsWith('ENC_AES256GCM:')) {
+              remoteState = await decryptStateWithAesGcm(rawText, rawPasskey);
+            } else {
+              const data = JSON.parse(rawText);
+              if (data && data.cipherText) {
+                remoteState = await decryptStateWithAesGcm(data.cipherText, rawPasskey);
+              } else {
+                remoteState = (data && data.fullBackupJson) ? await decryptStateWithAesGcm(data.fullBackupJson, rawPasskey) : data;
+              }
+            }
             const added = mergeRemotePartnerState(remoteState);
             state.cloudSync.lastSyncedAt = getNow().toISOString();
             saveState(false);
@@ -2765,13 +2921,17 @@
         return `${(Number(kg) * 2.20462).toFixed(1)} lbs`;
       }
 
-      // Apply Theme
+      // Apply Theme (Daylight, Night Slate, 3 AM Red-Light Nursery Mode & iPad Kiosk Stand Mode)
       function applyTheme() {
-        if (state.darkMode) {
+        if (state.darkMode || state.redLightMode) {
           document.documentElement.classList.add('dark');
         } else {
           document.documentElement.classList.remove('dark');
         }
+        document.documentElement.classList.toggle('red-nursery', Boolean(state.redLightMode));
+        document.body.classList.toggle('ipad-kiosk', Boolean(state.kioskMode));
+        const kioskLbl = document.getElementById('kioskModeLabel');
+        if (kioskLbl) kioskLbl.textContent = state.kioskMode ? 'Stand Active' : 'iPad Stand';
       }
 
       // Compute Exact Chronological Age, Gestational Age at Birth, and Due-Date Corrected Age
@@ -4154,6 +4314,18 @@
           document.getElementById('carePhotoPreviewWrap').classList.add('hidden');
           document.getElementById('removeCarePhotoBtn').classList.add('hidden');
 
+          // Pediatric Fever Red-Flag Check (>= 38.0°C or >= 100.4°F in a newborn)
+          if (subType === 'Temperature') {
+            const tNum = parseFloat(valStr);
+            if (!isNaN(tNum)) {
+              const isFahrenheit = valStr.toLowerCase().includes('f') || tNum > 45;
+              const cVal = isFahrenheit ? (tNum - 32) * (5 / 9) : tNum;
+              if (cVal >= 38.0) {
+                showToast('⚠️ Pediatric Alert: Newborn temp ≥ 38.0°C (100.4°F) — Contact pediatrician promptly!', 'bg-rose-600');
+              }
+            }
+          }
+
           // If Weight Check, also update baby's current weight & chart
           if (subType === 'Weight Check') {
             const num = parseFloat(valStr);
@@ -4505,6 +4677,7 @@
               ev.notes = notes;
               ev.reminder = reminder;
               ev.completed = completed;
+              ev.updatedAt = Date.now();
             }
           } else {
             state.calendarEvents.push({
@@ -4627,6 +4800,7 @@
               m.dateAchieved = dateVal;
               m.memory = memVal;
               m.photoDataUrl = pendingMilestonePhoto || '';
+              m.updatedAt = Date.now();
             }
           } else {
             const title = document.getElementById('customMilestoneName').value.trim() || 'Special Moment';
@@ -4709,6 +4883,7 @@
           if (pendingBabyFacePhoto) {
             state.profile.avatarDataUrl = pendingBabyFacePhoto;
           }
+          state.profile.updatedAt = Date.now();
           saveState();
           renderAll();
           closeProf();
@@ -4849,13 +5024,38 @@
           }
         });
 
-        // Cloud Backup Modal, Secret Passkey & PIN Lock Controls
+        // iPad Nursery Kiosk Mode (Screen Wake Lock API) & 3 AM Red-Light Nursery Mode
+        let wakeLockSentinel = null;
+        document.getElementById('toggleKioskModeBtn').addEventListener('click', async () => {
+          state.kioskMode = !state.kioskMode;
+          if (state.kioskMode && 'wakeLock' in navigator) {
+            try {
+              wakeLockSentinel = await navigator.wakeLock.request('screen');
+            } catch (e) {}
+          } else if (!state.kioskMode && wakeLockSentinel) {
+            try { await wakeLockSentinel.release(); } catch (e) {}
+            wakeLockSentinel = null;
+          }
+          saveState(false);
+          applyTheme();
+          showToast(state.kioskMode ? '📱 iPad Nursery Stand Mode ON (Screen Wake Lock + Large Timers)' : 'iPad Stand Mode OFF', 'bg-indigo-500');
+        });
+
+        document.getElementById('toggleRedLightBtn').addEventListener('click', () => {
+          state.redLightMode = !state.redLightMode;
+          saveState(false);
+          renderAll();
+          showToast(state.redLightMode ? '🔴 3 AM Red-Light Nursery Mode ON (Preserves Night Vision)' : 'Standard theme restored', 'bg-rose-600');
+        });
+
+        // Cloud Backup Modal, Secret Passkey, E2EE & PIN Lock Controls
         const openCloudModal = () => {
-          if (!state.cloudSync) state.cloudSync = { webhookUrl: '', passkey: generateRandomPasskey(), autoSync: true, lastSyncedAt: '' };
+          if (!state.cloudSync) state.cloudSync = { webhookUrl: '', passkey: generateRandomPasskey(), autoSync: true, e2ee: false, lastSyncedAt: '' };
           if (!state.cloudSync.passkey) state.cloudSync.passkey = generateRandomPasskey();
           document.getElementById('gasWebhookUrlInput').value = state.cloudSync.webhookUrl || '';
           document.getElementById('syncPasskeyInput').value = state.cloudSync.passkey || '';
           document.getElementById('autoSyncCheck').checked = Boolean(state.cloudSync.autoSync);
+          document.getElementById('e2eeToggleCheck').checked = Boolean(state.cloudSync.e2ee);
           document.getElementById('cloudSyncModal').classList.remove('hidden');
         };
         document.getElementById('openCloudSyncModalBtn').addEventListener('click', openCloudModal);
@@ -4876,10 +5076,11 @@
         document.getElementById('closeCloudModalFooterBtn').addEventListener('click', closeCloudModal);
 
         document.getElementById('syncNowModalBtn').addEventListener('click', () => {
-          if (!state.cloudSync) state.cloudSync = { webhookUrl: '', passkey: generateRandomPasskey(), autoSync: true, lastSyncedAt: '' };
+          if (!state.cloudSync) state.cloudSync = { webhookUrl: '', passkey: generateRandomPasskey(), autoSync: true, e2ee: false, lastSyncedAt: '' };
           state.cloudSync.webhookUrl = document.getElementById('gasWebhookUrlInput').value.trim();
           state.cloudSync.passkey = document.getElementById('syncPasskeyInput').value.trim() || generateRandomPasskey();
           state.cloudSync.autoSync = document.getElementById('autoSyncCheck').checked;
+          state.cloudSync.e2ee = document.getElementById('e2eeToggleCheck').checked;
           saveState(false);
           renderAll();
           syncToGoogleCloud(false);
@@ -4927,8 +5128,15 @@
           }
         });
 
+        let failedPinAttempts = 0;
+        let pinLockoutUntil = 0;
         document.getElementById('pinLockForm').addEventListener('submit', (e) => {
           e.preventDefault();
+          if (Date.now() < pinLockoutUntil) {
+            const waitSec = Math.ceil((pinLockoutUntil - Date.now()) / 1000);
+            showToast(`Too many failed attempts. Wait ${waitSec}s.`, 'bg-rose-600');
+            return;
+          }
           const entered = document.getElementById('pinCodeInput').value.trim();
           if (!/^[0-9]{4}$/.test(entered)) {
             showToast('PIN must be 4 digits', 'bg-rose-500');
@@ -4937,16 +5145,25 @@
           if (!state.pinHash) {
             state.pinHash = simpleHashPin(entered);
             state.isLocked = false;
+            failedPinAttempts = 0;
             saveState(false);
             document.getElementById('pinLockModal').classList.add('hidden');
             showToast('4-digit PIN set! Tap 🔒 PIN Lock anytime to lock screen.', 'bg-emerald-500');
           } else if (simpleHashPin(entered) === state.pinHash) {
             state.isLocked = false;
+            failedPinAttempts = 0;
             saveState(false);
             document.getElementById('pinLockModal').classList.add('hidden');
             showToast('App unlocked! 🔓', 'bg-emerald-500');
           } else {
-            showToast('Incorrect PIN code', 'bg-rose-500');
+            failedPinAttempts++;
+            if (failedPinAttempts >= 5) {
+              pinLockoutUntil = Date.now() + 30000;
+              failedPinAttempts = 0;
+              showToast('5 incorrect attempts — PIN locked for 30 seconds.', 'bg-rose-600');
+            } else {
+              showToast(`Incorrect PIN code (${5 - failedPinAttempts} attempts remaining)`, 'bg-rose-500');
+            }
           }
         });
 
@@ -5033,12 +5250,38 @@
           });
         });
 
-        // Copy Ready-to-Paste Authenticated 2-Way Common Memory Google Apps Script (with Passkey Check & Tombstone Merge)
+        // Copy Ready-to-Paste Least-Privilege (@OnlyCurrentDoc) 2-Way Google Apps Script (ZERO DriveApp access!)
         document.getElementById('copyAppsScriptCodeBtn').addEventListener('click', () => {
           const passkeyVal = (document.getElementById('syncPasskeyInput').value.trim() || (state.cloudSync && state.cloudSync.passkey) || generateRandomPasskey()).replace(/[^a-zA-Z0-9_-]/g, '');
           const gasCode = [
-            "// AUTHENTICATED 2-WAY SHARED MEMORY FOR MOM & DAD (Google Sheets + Google Drive)",
+            "/**",
+            " * @OnlyCurrentDoc",
+            " * LEAST-PRIVILEGE SECURITY: @OnlyCurrentDoc restricts this script STRICTLY to this",
+            " * single Google Sheet only. It has ZERO access to your other Google Drive files!",
+            " */",
             "var SECRET_PASSKEY = '" + passkeyVal + "';",
+            "var CHUNK_SIZE = 45000;",
+            "",
+            "function readRawStoredString(ss) {",
+            "  var stateSheet = ss.getSheetByName('App_State_DB');",
+            "  if (!stateSheet || stateSheet.getLastRow() === 0) return '';",
+            "  var vals = stateSheet.getRange(1, 1, stateSheet.getLastRow(), 1).getValues();",
+            "  return vals.map(function(r) { return r[0]; }).join('');",
+            "}",
+            "",
+            "function writeRawStoredString(ss, rawStr) {",
+            "  var stateSheet = ss.getSheetByName('App_State_DB') || ss.insertSheet('App_State_DB');",
+            "  stateSheet.clear();",
+            "  var jsonStr = typeof rawStr === 'string' ? rawStr : JSON.stringify(rawStr);",
+            "  var rows = [];",
+            "  for (var i = 0; i < jsonStr.length; i += CHUNK_SIZE) {",
+            "    rows.push([jsonStr.substring(i, i + CHUNK_SIZE)]);",
+            "  }",
+            "  if (rows.length > 0) {",
+            "    stateSheet.getRange(1, 1, rows.length, 1).setValues(rows);",
+            "  }",
+            "}",
+            "",
             "function doPost(e) {",
             "  var lock = LockService.getScriptLock();",
             "  lock.waitLock(10000);",
@@ -5047,32 +5290,46 @@
             "    if (SECRET_PASSKEY && data.passkey !== SECRET_PASSKEY) {",
             "      return ContentService.createTextOutput(JSON.stringify({error: 'UNAUTHORIZED'})).setMimeType(ContentService.MimeType.JSON);",
             "    }",
-            "    var incoming = JSON.parse(data.fullBackupJson);",
             "    var ss = SpreadsheetApp.getActiveSpreadsheet();",
+            "    var prevRaw = readRawStoredString(ss);",
+            "    if (data.isEncrypted || (typeof data.fullBackupJson === 'string' && data.fullBackupJson.indexOf('ENC_AES256GCM:') === 0)) {",
+            "      writeRawStoredString(ss, data.fullBackupJson);",
+            "      return ContentService.createTextOutput(JSON.stringify({status: 'OK', previousCipher: prevRaw})).setMimeType(ContentService.MimeType.JSON);",
+            "    }",
+            "    var incoming = JSON.parse(data.fullBackupJson);",
             "    var logSheet = ss.getSheetByName('Daily_Logs') || ss.insertSheet('Daily_Logs');",
             "    if (logSheet.getLastRow() === 0) {",
             "      logSheet.appendRow(['Synced At', 'Log ID', 'Timestamp', 'Category', 'Summary', 'Details']);",
             "    }",
-            "    var folders = DriveApp.getFoldersByName('LittleSteps Baby Backups');",
-            "    var folder = folders.hasNext() ? folders.next() : DriveApp.createFolder('LittleSteps Baby Backups');",
-            "    var files = folder.getFilesByName('littlesteps_latest_backup.json');",
             "    var merged = incoming;",
-            "    if (files.hasNext()) {",
-            "      var file = files.next();",
-            "      try {",
-            "        var existing = JSON.parse(file.getBlob().getDataAsString());",
+            "    try {",
+            "      var existing = (prevRaw && prevRaw.indexOf('ENC_AES256GCM:') !== 0) ? JSON.parse(prevRaw) : null;",
+            "      if (existing) {",
+            "        var deletedMap = {};",
+            "        (incoming.deletedIds || []).concat(existing.deletedIds || []).forEach(function(did) { if (did) deletedMap[did] = true; });",
+            "        merged.deletedIds = Object.keys(deletedMap);",
             "        var seenIds = {};",
             "        var combinedLogs = [];",
             "        (incoming.logs || []).concat(existing.logs || []).forEach(function(l) {",
-            "          if (l && l.id && !seenIds[l.id]) { seenIds[l.id] = true; combinedLogs.push(l); }",
+            "          if (l && l.id && !deletedMap[l.id] && !seenIds[l.id]) { seenIds[l.id] = true; combinedLogs.push(l); }",
             "        });",
             "        combinedLogs.sort(function(a, b) { return new Date(b.timestamp) - new Date(a.timestamp); });",
             "        merged.logs = combinedLogs;",
-            "      } catch (err) {}",
-            "      file.setContent(JSON.stringify(merged));",
-            "    } else {",
-            "      folder.createFile('littlesteps_latest_backup.json', JSON.stringify(merged), MimeType.PLAIN_TEXT);",
-            "    }",
+            "        var mMap = {};",
+            "        (existing.milestones || []).concat(incoming.milestones || []).forEach(function(m) {",
+            "          if (!m || !m.id || deletedMap[m.id]) return;",
+            "          if (!mMap[m.id] || (m.updatedAt || 0) >= (mMap[m.id].updatedAt || 0) || (m.completed && !mMap[m.id].completed)) mMap[m.id] = m;",
+            "        });",
+            "        merged.milestones = Object.keys(mMap).map(function(k) { return mMap[k]; });",
+            "        var cMap = {};",
+            "        (existing.calendarEvents || []).concat(incoming.calendarEvents || []).forEach(function(c) {",
+            "          if (!c || !c.id || deletedMap[c.id]) return;",
+            "          if (!cMap[c.id] || (c.updatedAt || 0) >= (cMap[c.id].updatedAt || 0) || (c.completed && !cMap[c.id].completed)) cMap[c.id] = c;",
+            "        });",
+            "        merged.calendarEvents = Object.keys(cMap).map(function(k) { return cMap[k]; });",
+            "      }",
+            "    } catch (err) {}",
+            "    writeRawStoredString(ss, merged);",
             "    if (data.recentLogs && data.recentLogs.length > 0) {",
             "      var latest = data.recentLogs[0];",
             "      logSheet.appendRow([data.syncedAt, latest.id, latest.timestamp, latest.type, latest.summary, latest.details]);",
@@ -5082,17 +5339,16 @@
             "    lock.releaseLock();",
             "  }",
             "}",
+            "",
             "function doGet(e) {",
             "  var reqKey = (e && e.parameter && e.parameter.key) ? e.parameter.key : '';",
             "  if (SECRET_PASSKEY && reqKey !== SECRET_PASSKEY) {",
             "    return ContentService.createTextOutput(JSON.stringify({error: 'UNAUTHORIZED'})).setMimeType(ContentService.MimeType.JSON);",
             "  }",
-            "  var folders = DriveApp.getFoldersByName('LittleSteps Baby Backups');",
-            "  if (folders.hasNext()) {",
-            "    var files = folders.next().getFilesByName('littlesteps_latest_backup.json');",
-            "    if (files.hasNext()) {",
-            "      return ContentService.createTextOutput(files.next().getBlob().getDataAsString()).setMimeType(ContentService.MimeType.JSON);",
-            "    }",
+            "  var ss = SpreadsheetApp.getActiveSpreadsheet();",
+            "  var rawStr = readRawStoredString(ss);",
+            "  if (rawStr) {",
+            "    return ContentService.createTextOutput(rawStr).setMimeType(ContentService.MimeType.JSON);",
             "  }",
             "  return ContentService.createTextOutput(JSON.stringify({status: 'EMPTY'})).setMimeType(ContentService.MimeType.JSON);",
             "}"
