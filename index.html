@@ -115,10 +115,10 @@
       <div class="flex flex-wrap items-center justify-between gap-3">
         <!-- Brand & Baby Profile Summary with Clickable Face Photo Avatar -->
         <div class="flex items-center gap-3">
-          <button id="headerFacePhotoBtn" type="button" class="relative group w-12 h-12 rounded-full bg-gradient-to-br from-rose-400 via-amber-300 to-sky-400 p-0.5 shadow-sm flex-shrink-0 focus:outline-none" title="Change Baby's Face Photo">
+          <button id="headerFacePhotoBtn" type="button" class="relative group w-12 h-12 rounded-full bg-gradient-to-br from-rose-400 via-amber-300 to-sky-400 p-0.5 shadow-sm flex-shrink-0 focus:outline-none hover:scale-105 transition" title="Click to View Enlarged Profile Photo">
             <img id="headerBabyFaceImg" src="" alt="Baby Face" class="w-full h-full rounded-full object-cover bg-white dark:bg-slate-900" />
-            <span class="absolute -bottom-0.5 -right-0.5 w-5 h-5 rounded-full bg-slate-900 text-white dark:bg-white dark:text-slate-900 text-[10px] flex items-center justify-center shadow">
-              📷
+            <span class="absolute -bottom-0.5 -right-0.5 w-5 h-5 rounded-full bg-slate-900 text-white dark:bg-white dark:text-slate-900 text-[10px] flex items-center justify-center shadow" title="View Enlarged Photo">
+              🔍
             </span>
           </button>
           <div>
@@ -129,7 +129,7 @@
               </span>
               <button id="openVersionModalBtn" type="button" class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-mono font-bold bg-indigo-100 hover:bg-indigo-200 text-indigo-800 dark:bg-indigo-950/90 dark:hover:bg-indigo-900 dark:text-indigo-300 border border-indigo-200/80 dark:border-indigo-800 transition shadow-sm" title="View App Version, Release Notes & Check for Updates">
                 <span id="versionStatusDot" class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                <span id="headerVersionBadgeText">v7.0</span>
+                <span id="headerVersionBadgeText">v8.0</span>
               </button>
               <button id="editProfileBtn" type="button" class="text-xs text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition" title="Edit Baby Profile & Face Photo">
                 <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -341,9 +341,9 @@
         <div class="lg:col-span-5 bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200/80 dark:border-slate-800 shadow-sm flex flex-col justify-between">
           <div class="flex items-center gap-4">
             <div class="relative flex-shrink-0">
-              <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gradient-to-tr from-rose-400 via-amber-300 to-sky-400 p-1 shadow-md">
-                <img id="dashboardBabyAvatarImg" src="" alt="Baby Portrait" class="w-full h-full rounded-full object-cover bg-white dark:bg-slate-900" />
-              </div>
+              <button id="dashboardAvatarEnlargeBtn" type="button" class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gradient-to-tr from-rose-400 via-amber-300 to-sky-400 p-1 shadow-md hover:scale-105 transition focus:outline-none block" title="Click to View Enlarged Profile Photo">
+                <img id="dashboardBabyAvatarImg" src="" alt="Baby Portrait" class="w-full h-full rounded-full object-cover bg-white dark:bg-slate-900 cursor-pointer" />
+              </button>
               <label for="dashboardBabyFaceInput" class="cursor-pointer absolute bottom-0 right-0 px-2 py-0.5 rounded-full bg-slate-900 text-white dark:bg-white dark:text-slate-900 text-[10px] font-bold shadow hover:scale-105 transition" title="Upload Baby's Face Photo">
                 📷 Edit
               </label>
@@ -1558,24 +1558,33 @@
   <!-- ========================================== -->
   <!-- MODAL 4: FULLSCREEN PHOTO KEEPSAKE VIEWER  -->
   <!-- ========================================== -->
-  <div id="photoLightboxModal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
-    <div class="bg-white dark:bg-slate-900 rounded-2xl max-w-lg w-full p-5 border border-slate-200 dark:border-slate-800 shadow-2xl space-y-4">
+  <div id="photoLightboxModal" class="fixed inset-0 z-[60] hidden bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 rounded-2xl max-w-2xl w-full p-5 border border-slate-200 dark:border-slate-800 shadow-2xl space-y-4">
       <div class="flex items-center justify-between">
         <div>
           <span id="lightboxBadge" class="text-[11px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300">Milestone Memory</span>
-          <h3 id="lightboxTitle" class="text-base font-bold text-slate-900 dark:text-white mt-1">Photo Memory</h3>
+          <h3 id="lightboxTitle" class="text-base sm:text-lg font-bold text-slate-900 dark:text-white mt-1">Photo Memory</h3>
         </div>
-        <button id="closeLightboxBtn" type="button" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1.5 rounded-lg">✕</button>
+        <button id="closeLightboxBtn" type="button" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1.5 rounded-lg text-lg leading-none">✕</button>
       </div>
-      <div class="bg-slate-50 dark:bg-slate-950 p-3 rounded-xl border border-slate-200/70 dark:border-slate-800 flex flex-col items-center">
-        <img id="lightboxImg" src="" alt="Full size memory" class="max-h-96 w-auto rounded-lg object-contain shadow-sm" />
+      <div class="bg-slate-50 dark:bg-slate-950 p-3 sm:p-4 rounded-xl border border-slate-200/70 dark:border-slate-800 flex flex-col items-center">
+        <img id="lightboxImg" src="" alt="Full size memory" class="max-h-[62vh] w-auto rounded-xl object-contain shadow-md" />
         <p id="lightboxDate" class="text-xs font-semibold text-amber-600 dark:text-amber-400 mt-3"></p>
         <p id="lightboxCaption" class="text-xs text-slate-600 dark:text-slate-300 text-center mt-1 italic"></p>
+        <p class="text-[10px] text-slate-400 mt-1.5">💡 Tip: On iPad/iPhone, you can also long-press the image above and tap "Save to Photos"</p>
       </div>
-      <div class="flex items-center justify-between pt-1">
-        <a id="downloadLightboxPhotoBtn" href="#" download="baby_memory.png" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-amber-500 hover:bg-amber-600 text-slate-950 transition">
-          ⬇ Download Photo
-        </a>
+      <div class="flex flex-wrap items-center justify-between gap-2 pt-1">
+        <div class="flex flex-wrap items-center gap-2">
+          <button id="downloadLightboxPhotoBtn" type="button" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 shadow-sm transition">
+            ⬇ Download Image
+          </button>
+          <button id="shareLightboxPhotoBtn" type="button" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm transition">
+            📲 Save to iPad Photos / Share
+          </button>
+          <label id="lightboxChangeProfilePhotoLabel" for="dashboardBabyFaceInput" class="hidden cursor-pointer px-3.5 py-2 rounded-xl text-xs font-bold bg-rose-50 hover:bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-300 border border-rose-200 dark:border-rose-800 transition">
+            📷 Change Profile Photo
+          </label>
+        </div>
         <button id="closeLightboxFooterBtn" type="button" class="px-4 py-2 rounded-xl text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
           Close
         </button>
@@ -1793,7 +1802,7 @@
       <div class="flex items-start justify-between gap-3">
         <div>
           <div class="flex items-center gap-2">
-            <span class="px-2.5 py-0.5 rounded-full text-xs font-mono font-extrabold bg-indigo-600 text-white" id="modalCurrentVersionPill">v7.0</span>
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-mono font-extrabold bg-indigo-600 text-white" id="modalCurrentVersionPill">v8.0</span>
             <span id="modalUpdateStatusBadge" class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
               ✓ Latest Version Installed
             </span>
@@ -1909,11 +1918,33 @@
       // - Every New Feature increments a Full Generation (+1.0)
       // - Every Bug Squashed increments a Sub-Generation (+0.1)
       // ============================================================================
-      const APP_VERSION = '7.0';
+      const APP_VERSION = '8.0';
       const APP_RELEASE_DATE = '3 Nov 2026 (IST)';
       const VERSION_STORAGE_KEY = 'littlesteps_last_seen_version';
       const PERMANENT_CLOUD_VAULT_KEY = 'LITTLESTEPS_PERMANENT_CLOUD_VAULT_V1';
       const VERSION_CHANGELOG = [
+        {
+          version: '8.0',
+          type: 'feature',
+          badge: '✨ NEW FEATURE (+1.0)',
+          date: '3 Nov 2026 (IST)',
+          title: 'Click-to-Enlarge Profile Portrait Lightbox & iPad Native Photo Saver',
+          changes: [
+            'Clicking Agastya’s profile photo in the Top Header, on the Dashboard Hero Card, or inside the Photo Vault now opens a high-resolution Enlarged Fullscreen Portrait Lightbox.',
+            'Added a direct "📷 Change Profile Photo" action and "📲 Save to iPad Photos / Share" button right inside the enlarged portrait view.'
+          ]
+        },
+        {
+          version: '7.1',
+          type: 'bugfix',
+          badge: '🐛 BUG SQUASHED (+0.1)',
+          date: '3 Nov 2026 (IST)',
+          title: 'Fixed "Download Image" Button Not Triggering on iPad / Browser',
+          changes: [
+            'Fixed bug where clicking "⬇ Download Image" on Base64 data: URLs was ignored by WebKit/Safari and Chromium.',
+            'Built a binary Blob + URL.createObjectURL + Canvas PNG/JPEG converter with native iPadOS Web Share sheet fallback so single and bulk image downloads work reliably across iPad, iPhone, and Desktop.'
+          ]
+        },
         {
           version: '7.0',
           type: 'feature',
@@ -5603,7 +5634,11 @@
           document.getElementById('profileModal').classList.remove('hidden');
         };
         document.getElementById('editProfileBtn').addEventListener('click', openProfModal);
-        document.getElementById('headerFacePhotoBtn').addEventListener('click', openProfModal);
+        document.getElementById('headerFacePhotoBtn').addEventListener('click', () => openPhotoLightbox('profile', 'profile-avatar'));
+        const dashEnlargeBtn = document.getElementById('dashboardAvatarEnlargeBtn');
+        if (dashEnlargeBtn) {
+          dashEnlargeBtn.addEventListener('click', () => openPhotoLightbox('profile', 'profile-avatar'));
+        }
         document.getElementById('compEditDueDateBtn').addEventListener('click', openProfModal);
 
         // Baby Face Photo Upload in Profile Modal & Dashboard
@@ -5627,8 +5662,13 @@
           if (!file) return;
           readAndCompressImage(file, (dataUrl) => {
             state.profile.avatarDataUrl = dataUrl;
+            state.profile.updatedAt = Date.now();
             saveState();
             renderAll();
+            const lbModal = document.getElementById('photoLightboxModal');
+            if (lbModal && !lbModal.classList.contains('hidden')) {
+              openPhotoLightbox('profile', 'profile-avatar');
+            }
             showToast('Updated baby face photo! 📸', 'bg-rose-500');
           });
         });
@@ -6394,14 +6434,97 @@
         }
       }
 
+      let currentLightboxPhoto = { dataUrl: '', filename: 'agastya_photo.jpg', title: 'Agastya Photo' };
+
+      // Convert any data:image/... URI (JPEG, PNG, WebP, or SVG) into a real binary Blob for reliable downloading
+      async function dataUrlToImageBlob(dataUrl) {
+        if (!dataUrl || typeof dataUrl !== 'string') throw new Error('Empty image URL');
+        if (dataUrl.startsWith('data:image/svg+xml')) {
+          return new Promise((resolve, reject) => {
+            const img = new Image();
+            img.onload = () => {
+              const canvas = document.createElement('canvas');
+              canvas.width = 1000;
+              canvas.height = 1000;
+              const ctx = canvas.getContext('2d');
+              ctx.fillStyle = '#ffffff';
+              ctx.fillRect(0, 0, canvas.width, canvas.height);
+              ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+              canvas.toBlob(blob => blob ? resolve({ blob, ext: 'png', mime: 'image/png' }) : reject(new Error('Canvas blob failed')), 'image/png');
+            };
+            img.onerror = reject;
+            img.src = dataUrl;
+          });
+        }
+        const commaIdx = dataUrl.indexOf(',');
+        const header = dataUrl.slice(0, commaIdx);
+        const base64 = dataUrl.slice(commaIdx + 1);
+        const mimeMatch = header.match(/data:(image\/[a-zA-Z0-9+.-]+);base64/);
+        const mime = mimeMatch ? mimeMatch[1] : 'image/jpeg';
+        const ext = mime.includes('png') ? 'png' : 'jpg';
+        const binary = atob(base64);
+        const bytes = new Uint8Array(binary.length);
+        for (let i = 0; i < binary.length; i++) {
+          bytes[i] = binary.charCodeAt(i);
+        }
+        return { blob: new Blob([bytes], { type: mime }), ext, mime };
+      }
+
+      async function triggerReliablePhotoDownload(dataUrl, rawFilename, title = 'Agastya Photo', preferShareSheet = false) {
+        try {
+          const { blob, ext, mime } = await dataUrlToImageBlob(dataUrl);
+          const baseName = String(rawFilename || 'agastya_photo').replace(/\.(jpg|jpeg|png|svg|webp)$/i, '');
+          const cleanFilename = `${baseName}.${ext}`;
+
+          if (preferShareSheet && navigator.canShare) {
+            const fileObj = new File([blob], cleanFilename, { type: mime });
+            if (navigator.canShare({ files: [fileObj] })) {
+              await navigator.share({
+                files: [fileObj],
+                title: title || cleanFilename
+              });
+              showToast('Opened iPad/iPhone Save & Share sheet! 📸', 'bg-indigo-500');
+              return;
+            }
+          }
+
+          const blobUrl = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.style.display = 'none';
+          a.href = blobUrl;
+          a.download = cleanFilename;
+          document.body.appendChild(a);
+          a.click();
+          setTimeout(() => {
+            a.remove();
+            URL.revokeObjectURL(blobUrl);
+          }, 6000);
+          showToast(`Downloading ${cleanFilename}! 📥`, 'bg-emerald-500');
+        } catch (err) {
+          if (err && err.name === 'AbortError') return;
+          showToast('Tip: Long-press the enlarged photo and tap "Save to Photos"', 'bg-amber-500');
+        }
+      }
+
       function openPhotoLightbox(kind, id) {
         let title = 'Photo Memory';
         let badge = 'Milestone';
         let dateStr = '';
         let caption = '';
         let photoUrl = '';
+        let filename = 'agastya_photo.jpg';
+        const changeProfLabel = document.getElementById('lightboxChangeProfilePhotoLabel');
 
-        if (kind === 'milestone') {
+        if (kind === 'profile') {
+          const p = state.profile || {};
+          title = `${p.name || 'Agastya'} — Profile Portrait`;
+          badge = '👶 Baby Profile Portrait';
+          dateStr = `📅 Born ${formatShortDate(p.dob + 'T00:00:00')} at ${p.birthTime || '09:49'} IST • Current: ${formatWeight(p.currentWeightKg)} • ${p.currentLengthCm} cm`;
+          caption = 'Tap "📷 Change Profile Photo" below to update, or "⬇ Download Image" to save a copy.';
+          photoUrl = p.avatarDataUrl || createDefaultBabyFaceSvg();
+          filename = `${(p.name || 'agastya').toLowerCase()}_profile_portrait.jpg`;
+          if (changeProfLabel) changeProfLabel.classList.remove('hidden');
+        } else if (kind === 'milestone') {
           const m = state.milestones.find(x => x.id === id);
           if (!m || !m.photoDataUrl) return;
           title = m.title;
@@ -6409,6 +6532,8 @@
           dateStr = `📅 Achieved: ${m.dateAchieved || 'Recorded'}`;
           caption = m.memory || m.description;
           photoUrl = m.photoDataUrl;
+          filename = `${(state.profile.name || 'agastya').toLowerCase()}_milestone_${m.title.toLowerCase().replace(/[^a-z0-9]+/g, '_')}.jpg`;
+          if (changeProfLabel) changeProfLabel.classList.add('hidden');
         } else {
           const l = state.logs.find(x => x.id === id);
           if (!l || !l.photoDataUrl) return;
@@ -6418,15 +6543,16 @@
           dateStr = `📅 Logged: ${formatShortDate(l.timestamp)}, ${formatClockTime(l.timestamp)}`;
           caption = l.notes || info.subtitle;
           photoUrl = l.photoDataUrl;
+          filename = `${(state.profile.name || 'agastya').toLowerCase()}_${info.title.toLowerCase().replace(/[^a-z0-9]+/g, '_')}.jpg`;
+          if (changeProfLabel) changeProfLabel.classList.add('hidden');
         }
 
+        currentLightboxPhoto = { dataUrl: photoUrl, filename, title };
         document.getElementById('lightboxBadge').textContent = badge;
         document.getElementById('lightboxTitle').textContent = title;
         document.getElementById('lightboxImg').src = photoUrl;
         document.getElementById('lightboxDate').textContent = dateStr;
         document.getElementById('lightboxCaption').textContent = caption ? `"${caption}"` : '';
-        document.getElementById('downloadLightboxPhotoBtn').href = photoUrl;
-        document.getElementById('downloadLightboxPhotoBtn').download = `${title.toLowerCase().replace(/[^a-z0-9]+/g, '_')}.png`;
         document.getElementById('photoLightboxModal').classList.remove('hidden');
       }
 
@@ -6763,12 +6889,13 @@
           `;
           return;
         }
-        gridEl.innerHTML = photos.map(p => `
+        gridEl.innerHTML = photos.map((p, idx) => `
           <div class="rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-800/60 overflow-hidden flex flex-col justify-between shadow-sm">
             <div>
-              <div class="h-40 bg-slate-900/5 dark:bg-slate-950 flex items-center justify-center overflow-hidden">
-                <img src="${safeImgSrc(p.dataUrl)}" alt="${escapeHtml(p.title)}" class="w-full h-full object-cover" />
-              </div>
+              <button type="button" data-pvenlargeidx="${idx}" class="pv-enlarge-btn relative group w-full h-40 bg-slate-900/5 dark:bg-slate-950 flex items-center justify-center overflow-hidden focus:outline-none" title="Click to Enlarge Photo">
+                <img src="${safeImgSrc(p.dataUrl)}" alt="${escapeHtml(p.title)}" class="w-full h-full object-cover group-hover:scale-105 transition duration-200" />
+                <span class="absolute bottom-2 right-2 px-2 py-0.5 rounded-full bg-slate-900/80 text-white text-[10px] font-semibold">🔍 Enlarge</span>
+              </button>
               <div class="p-3 space-y-1">
                 <div class="flex items-center justify-between gap-1">
                   <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300">${escapeHtml(p.sourceType)}</span>
@@ -6778,10 +6905,13 @@
                 <p class="text-[11px] text-slate-500 dark:text-slate-400 line-clamp-2">${escapeHtml(p.caption)}</p>
               </div>
             </div>
-            <div class="px-3 pb-3 pt-1">
-              <a href="${safeImgSrc(p.dataUrl)}" download="${escapeHtml(p.filename)}" class="block w-full text-center py-1.5 px-3 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-white dark:bg-white dark:text-slate-900 transition">
+            <div class="px-3 pb-3 pt-1 flex items-center gap-1.5">
+              <button type="button" data-pvdlidx="${idx}" class="pv-download-btn flex-1 text-center py-1.5 px-2.5 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-white dark:bg-white dark:text-slate-900 transition">
                 ⬇ Download Image
-              </a>
+              </button>
+              <button type="button" data-pvshareidx="${idx}" class="pv-share-btn py-1.5 px-2.5 rounded-xl text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white transition" title="Save to iPad Photos / Share">
+                📲
+              </button>
             </div>
           </div>
         `).join('');
@@ -6800,6 +6930,60 @@
       const closePv2 = document.getElementById('closePhotoVaultFooterBtn');
       if (closePv2) closePv2.addEventListener('click', closePvModal);
 
+      const lbDlBtn = document.getElementById('downloadLightboxPhotoBtn');
+      if (lbDlBtn) {
+        lbDlBtn.addEventListener('click', () => {
+          if (currentLightboxPhoto && currentLightboxPhoto.dataUrl) {
+            triggerReliablePhotoDownload(currentLightboxPhoto.dataUrl, currentLightboxPhoto.filename, currentLightboxPhoto.title, false);
+          }
+        });
+      }
+      const lbShareBtn = document.getElementById('shareLightboxPhotoBtn');
+      if (lbShareBtn) {
+        lbShareBtn.addEventListener('click', () => {
+          if (currentLightboxPhoto && currentLightboxPhoto.dataUrl) {
+            triggerReliablePhotoDownload(currentLightboxPhoto.dataUrl, currentLightboxPhoto.filename, currentLightboxPhoto.title, true);
+          }
+        });
+      }
+
+      const pvGridEl = document.getElementById('photoVaultGrid');
+      if (pvGridEl) {
+        pvGridEl.addEventListener('click', (e) => {
+          const dlBtn = e.target.closest('.pv-download-btn');
+          if (dlBtn) {
+            const idx = Number(dlBtn.getAttribute('data-pvdlidx'));
+            const photos = collectAllUploadedPhotos();
+            const item = photos[idx];
+            if (item) triggerReliablePhotoDownload(item.dataUrl, item.filename, item.title, false);
+            return;
+          }
+          const shBtn = e.target.closest('.pv-share-btn');
+          if (shBtn) {
+            const idx = Number(shBtn.getAttribute('data-pvshareidx'));
+            const photos = collectAllUploadedPhotos();
+            const item = photos[idx];
+            if (item) triggerReliablePhotoDownload(item.dataUrl, item.filename, item.title, true);
+            return;
+          }
+          const enlBtn = e.target.closest('.pv-enlarge-btn');
+          if (enlBtn) {
+            const idx = Number(enlBtn.getAttribute('data-pvenlargeidx'));
+            const photos = collectAllUploadedPhotos();
+            const item = photos[idx];
+            if (item) {
+              if (item.id === 'profile-avatar') {
+                openPhotoLightbox('profile', 'profile-avatar');
+              } else if (String(item.id).startsWith('m-')) {
+                openPhotoLightbox('milestone', item.id);
+              } else {
+                openPhotoLightbox('log', item.id);
+              }
+            }
+          }
+        });
+      }
+
       const dlAllPhotosBtn = document.getElementById('downloadAllPhotosBulkBtn');
       if (dlAllPhotosBtn) {
         dlAllPhotosBtn.addEventListener('click', () => {
@@ -6810,15 +6994,9 @@
           }
           photos.forEach((p, idx) => {
             setTimeout(() => {
-              const a = document.createElement('a');
-              a.href = p.dataUrl;
-              a.download = p.filename;
-              document.body.appendChild(a);
-              a.click();
-              a.remove();
-            }, idx * 350);
+              triggerReliablePhotoDownload(p.dataUrl, p.filename, p.title, false);
+            }, idx * 450);
           });
-          showToast(`Downloading ${photos.length} photo(s) to your device! 📥`, 'bg-emerald-500');
         });
       }
 
