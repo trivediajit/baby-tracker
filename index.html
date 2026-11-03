@@ -129,7 +129,7 @@
               </span>
               <button id="openVersionModalBtn" type="button" class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-mono font-bold bg-indigo-100 hover:bg-indigo-200 text-indigo-800 dark:bg-indigo-950/90 dark:hover:bg-indigo-900 dark:text-indigo-300 border border-indigo-200/80 dark:border-indigo-800 transition shadow-sm" title="View App Version, Release Notes & Check for Updates">
                 <span id="versionStatusDot" class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                <span id="headerVersionBadgeText">v6.0</span>
+                <span id="headerVersionBadgeText">v7.0</span>
               </button>
               <button id="editProfileBtn" type="button" class="text-xs text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition" title="Edit Baby Profile & Face Photo">
                 <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -152,10 +152,15 @@
           <button id="activeParentToggleBtn" type="button" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-rose-50 hover:bg-rose-100 text-rose-700 dark:bg-rose-950/80 dark:text-rose-200 border border-rose-200/70 dark:border-rose-800 transition" title="Switch Active Parent Logging (Mom / Dad)">
             <span id="activeParentLabel">👨 Logging as: Dad</span>
           </button>
-          <button id="openCloudSyncModalBtn" type="button" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-emerald-50 hover:bg-emerald-100 text-emerald-700 dark:bg-emerald-950/70 dark:hover:bg-emerald-900/80 dark:text-emerald-300 border border-emerald-200/70 dark:border-emerald-800/60 transition" title="Mom & Dad Shared Common Memory + Google Drive/Sheets Sync">
-            <span id="cloudHeaderStatusDot" class="w-2 h-2 rounded-full bg-emerald-500"></span>
-            <span id="cloudHeaderBtnLabel">☁️ Drive / Sheets Backup</span>
-          </button>
+          <div class="inline-flex items-center rounded-xl border border-emerald-200/80 dark:border-emerald-800/70 bg-emerald-50/90 dark:bg-emerald-950/70 overflow-hidden shadow-sm">
+            <button id="headerQuickSyncNowBtn" type="button" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-emerald-800 dark:text-emerald-200 hover:bg-emerald-100/90 dark:hover:bg-emerald-900/80 transition" title="Sync Now with Google Drive / Sheets (Shows Offline Queue & IST Sync Status)">
+              <span id="cloudHeaderStatusDot" class="w-2 h-2 rounded-full bg-emerald-500"></span>
+              <span id="cloudHeaderBtnLabel">☁️ Sync Now with Google Drive</span>
+            </button>
+            <button id="openCloudSyncModalBtn" type="button" class="px-2 py-1.5 text-xs font-semibold text-emerald-700 dark:text-emerald-300 border-l border-emerald-200/80 dark:border-emerald-800/70 hover:bg-emerald-100 dark:hover:bg-emerald-900 transition" title="Configure Google Drive / Sheets Sync URL & Passkey">
+              ⚙️
+            </button>
+          </div>
           <button id="openPhotoVaultBtn" type="button" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-amber-50 hover:bg-amber-100 text-amber-800 dark:bg-amber-950/70 dark:hover:bg-amber-900/80 dark:text-amber-300 border border-amber-200/70 dark:border-amber-800/60 transition" title="View & Download All Uploaded Baby Photos">
             <span>📸</span>
             <span id="headerPhotoVaultCount">Photos (0)</span>
@@ -1788,7 +1793,7 @@
       <div class="flex items-start justify-between gap-3">
         <div>
           <div class="flex items-center gap-2">
-            <span class="px-2.5 py-0.5 rounded-full text-xs font-mono font-extrabold bg-indigo-600 text-white" id="modalCurrentVersionPill">v5.0</span>
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-mono font-extrabold bg-indigo-600 text-white" id="modalCurrentVersionPill">v7.0</span>
             <span id="modalUpdateStatusBadge" class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
               ✓ Latest Version Installed
             </span>
@@ -1904,11 +1909,34 @@
       // - Every New Feature increments a Full Generation (+1.0)
       // - Every Bug Squashed increments a Sub-Generation (+0.1)
       // ============================================================================
-      const APP_VERSION = '6.0';
-      const APP_RELEASE_DATE = '3 Nov 2026';
+      const APP_VERSION = '7.0';
+      const APP_RELEASE_DATE = '3 Nov 2026 (IST)';
       const VERSION_STORAGE_KEY = 'littlesteps_last_seen_version';
       const PERMANENT_CLOUD_VAULT_KEY = 'LITTLESTEPS_PERMANENT_CLOUD_VAULT_V1';
       const VERSION_CHANGELOG = [
+        {
+          version: '7.0',
+          type: 'feature',
+          badge: '✨ NEW FEATURE (+1.0)',
+          date: '3 Nov 2026 (IST)',
+          title: 'Multi-Entry Offline Queue Auto-Sync, Live Sync Button Status & Universal IST Timezone',
+          changes: [
+            'Added persistent Offline Entry Queue (state.unsyncedLogIds) that tracks every entry logged while internet is unavailable and automatically syncs all queued entries in order when connection returns.',
+            'Upgraded the "Sync Now with Google Drive" buttons in the header, dashboard, Cloud modal, and History tab to dynamically display live queue counts (e.g. "📡 Offline (3 queued)" -> "🔄 Syncing 3 entries..." -> "☁️ Synced ✓ (IST)").',
+            'Standardized 100% of dates and times across the app, CSV/TSV exports, and Google Sheets (Daily_Logs & State_Backups) to Indian Standard Time (IST / Asia/Kolkata, UTC+05:30).'
+          ]
+        },
+        {
+          version: '6.1',
+          type: 'bugfix',
+          badge: '🐛 BUG SQUASHED (+0.1)',
+          date: '3 Nov 2026 (IST)',
+          title: 'Fixed Offline Multi-Log Drop in Google Sheets & UTC Timestamp Bug',
+          changes: [
+            'Fixed bug where logging multiple entries while offline only appended the single latest entry (recentLogs[0]) to the Daily_Logs sheet tab upon reconnect—now flushes and deduplicates every queued log ID.',
+            'Fixed UTC (.toISOString()) timestamps appearing in Google Sheets Daily_Logs instead of human-readable IST timestamps.'
+          ]
+        },
         {
           version: '6.0',
           type: 'feature',
@@ -2188,14 +2216,56 @@
         return JSON.parse(plainStr);
       }
 
-      function toLocalDatetimeInputValue(dateObj) {
-        const d = new Date(dateObj.getTime() - dateObj.getTimezoneOffset() * 60000);
-        return d.toISOString().slice(0, 16);
+      // Explicit Indian Standard Time (IST / Asia/Kolkata, UTC+05:30) Date & Time Helpers
+      const IST_OFFSET_MINUTES = 330; // +05:30
+      function toISTShiftedDate(dateInput = getNow()) {
+        const d = (dateInput instanceof Date) ? dateInput : new Date(dateInput);
+        const safeD = isNaN(d.getTime()) ? new Date() : d;
+        return new Date(safeD.getTime() + (IST_OFFSET_MINUTES * 60000));
       }
 
-      function toLocalDateInputValue(dateObj) {
-        const d = new Date(dateObj.getTime() - dateObj.getTimezoneOffset() * 60000);
-        return d.toISOString().slice(0, 10);
+      function toLocalDatetimeInputValue(dateObj = getNow()) {
+        return toISTShiftedDate(dateObj).toISOString().slice(0, 16);
+      }
+
+      function toLocalDateInputValue(dateObj = getNow()) {
+        return toISTShiftedDate(dateObj).toISOString().slice(0, 10);
+      }
+
+      function parseISTDatetimeInputToISO(inputStr) {
+        if (!inputStr) return getNow().toISOString();
+        const clean = String(inputStr).trim();
+        if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(clean)) {
+          return new Date(clean + ':00+05:30').toISOString();
+        }
+        if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/.test(clean)) {
+          return new Date(clean + '+05:30').toISOString();
+        }
+        const parsed = new Date(clean);
+        return isNaN(parsed.getTime()) ? getNow().toISOString() : parsed.toISOString();
+      }
+
+      function formatISTFullDateTime(isoOrDate) {
+        const d = (isoOrDate instanceof Date) ? isoOrDate : new Date(isoOrDate || Date.now());
+        if (isNaN(d.getTime())) return String(isoOrDate || '');
+        try {
+          const datePart = d.toLocaleDateString('en-IN', { timeZone: 'Asia/Kolkata', day: '2-digit', month: 'short', year: 'numeric' });
+          const timePart = d.toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true }).toUpperCase();
+          return `${datePart}, ${timePart} IST`;
+        } catch (e) {
+          const ist = toISTShiftedDate(d);
+          return ist.toISOString().replace('T', ' ').slice(0, 19) + ' IST';
+        }
+      }
+
+      function formatISTShortTime(isoOrDate) {
+        const d = (isoOrDate instanceof Date) ? isoOrDate : new Date(isoOrDate || Date.now());
+        if (isNaN(d.getTime())) return '--:-- IST';
+        try {
+          return d.toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', hour12: true }).toUpperCase() + ' IST';
+        } catch (e) {
+          return toISTShiftedDate(d).toISOString().slice(11, 16) + ' IST';
+        }
       }
 
       function hoursAgoISO(hours, minsOffset = 0) {
@@ -2885,6 +2955,7 @@
             lastSyncedAt: ''
           },
           deletedIds: [],
+          unsyncedLogIds: [],
           hasUnsyncedChanges: false,
           activeTimers: {
             left: { running: false, startedAt: null, accumulatedSec: 0, updatedAt: 0 },
@@ -3000,8 +3071,34 @@
         });
       }
 
+      let knownSyncedLogIds = null;
+
+      function ensureOfflineQueueTracked() {
+        if (!Array.isArray(state.unsyncedLogIds)) state.unsyncedLogIds = [];
+        const currentIds = (state.logs || []).map(l => l && l.id).filter(Boolean);
+        if (knownSyncedLogIds === null) {
+          knownSyncedLogIds = new Set(currentIds);
+          state.unsyncedLogIds.forEach(id => knownSyncedLogIds.delete(id));
+        } else {
+          currentIds.forEach(id => {
+            if (!knownSyncedLogIds.has(id) && !state.unsyncedLogIds.includes(id)) {
+              state.unsyncedLogIds.push(id);
+            }
+          });
+        }
+        const validSet = new Set(currentIds);
+        state.unsyncedLogIds = state.unsyncedLogIds.filter(id => validSet.has(id));
+      }
+
+      function getPendingSyncCount() {
+        ensureOfflineQueueTracked();
+        if (state.unsyncedLogIds.length > 0) return state.unsyncedLogIds.length;
+        return state.hasUnsyncedChanges ? 1 : 0;
+      }
+
       function saveState(triggerAutoCloud = true) {
         ensureActiveTimersStruct(state);
+        ensureOfflineQueueTracked();
         if (state.cloudSync && state.cloudSync.webhookUrl) {
           saveCloudCredentialsToPermanentVault(state.cloudSync, state.activeParent);
         }
@@ -3018,24 +3115,97 @@
           tx.objectStore(IDB_STORE).put(state, 'main');
         }).catch(() => {});
 
+        updateSyncButtonsUI();
+
         if (triggerAutoCloud && state.cloudSync && state.cloudSync.autoSync && state.cloudSync.webhookUrl) {
-          scheduleCloudSync();
+          if (navigator.onLine === false) {
+            updateSyncButtonsUI();
+          } else {
+            scheduleCloudSync();
+          }
         }
       }
 
       let syncDebounceTimer = null;
       let isSyncInFlight = false;
 
+      function updateSyncButtonsUI() {
+        const hasUrl = Boolean(state.cloudSync && state.cloudSync.webhookUrl);
+        const isOffline = (typeof navigator !== 'undefined' && navigator.onLine === false);
+        const pendingCount = getPendingSyncCount();
+
+        const dot = document.getElementById('cloudHeaderStatusDot');
+        const headerLbl = document.getElementById('cloudHeaderBtnLabel');
+        const modalSyncBtn = document.getElementById('syncNowModalBtn');
+        const histSyncBtn = document.getElementById('syncNowHistoryBtn');
+        const dashSyncBtn = document.getElementById('pullPartnerSyncNowBtn');
+        const cloudText = document.getElementById('cloudLastSyncText');
+
+        if (!hasUrl) {
+          if (dot) dot.className = 'w-2 h-2 rounded-full bg-amber-400';
+          if (headerLbl) headerLbl.textContent = '☁️ Connect Google Drive / Sheets';
+          if (modalSyncBtn) modalSyncBtn.textContent = '☁️ Save & Sync Now to Google Cloud';
+          if (histSyncBtn) histSyncBtn.textContent = '🔄 Sync Now with Google Drive';
+          if (cloudText) cloudText.textContent = 'Local IndexedDB active • Add Google Script URL for automatic cloud backup (IST).';
+          return;
+        }
+
+        if (isSyncInFlight) {
+          if (dot) dot.className = 'w-2 h-2 rounded-full bg-sky-400 animate-ping';
+          const syncMsg = pendingCount > 0 ? `⏳ Syncing ${pendingCount} queued entry(s)...` : '⏳ Syncing with Google Drive...';
+          if (headerLbl) headerLbl.textContent = syncMsg;
+          if (modalSyncBtn) modalSyncBtn.textContent = syncMsg;
+          if (histSyncBtn) histSyncBtn.textContent = syncMsg;
+          if (dashSyncBtn) dashSyncBtn.textContent = '⏳ Syncing...';
+          return;
+        }
+
+        if (isOffline) {
+          if (dot) dot.className = 'w-2 h-2 rounded-full bg-amber-500 animate-ping';
+          const qText = pendingCount > 0
+            ? `📡 Offline (${pendingCount} queued — auto-syncs on net)`
+            : '📡 Offline (Saved locally — auto-syncs on net)';
+          if (headerLbl) headerLbl.textContent = qText;
+          if (modalSyncBtn) modalSyncBtn.textContent = `📡 Offline • ${pendingCount} Queued (Tap to Retry Sync)`;
+          if (histSyncBtn) histSyncBtn.textContent = `📡 Offline (${pendingCount} Queued for Auto-Sync)`;
+          if (dashSyncBtn) dashSyncBtn.textContent = `📡 Offline (${pendingCount} Queued)`;
+          if (cloudText) cloudText.textContent = `📡 Internet unavailable • ${pendingCount} entry(s) safely queued in IndexedDB & will auto-sync in IST when online.`;
+          return;
+        }
+
+        if (pendingCount > 0) {
+          if (dot) dot.className = 'w-2 h-2 rounded-full bg-amber-400 animate-ping';
+          if (headerLbl) headerLbl.textContent = `🔄 Sync Now with Google Drive (${pendingCount} pending)`;
+          if (modalSyncBtn) modalSyncBtn.textContent = `☁️ Sync ${pendingCount} Pending Entry(s) Now`;
+          if (histSyncBtn) histSyncBtn.textContent = `🔄 Sync Now (${pendingCount} Pending)`;
+          if (dashSyncBtn) dashSyncBtn.textContent = `🔄 Sync Phones (${pendingCount} new)`;
+          if (cloudText) cloudText.textContent = `⏳ ${pendingCount} new entry(s) waiting to sync to Google Sheets (IST)...`;
+          return;
+        }
+
+        // 100% Synced & Online
+        if (dot) dot.className = 'w-2 h-2 rounded-full bg-emerald-500 animate-pulse';
+        const lastIst = state.cloudSync.lastSyncedAt ? formatISTShortTime(state.cloudSync.lastSyncedAt) : 'Ready';
+        if (headerLbl) headerLbl.textContent = `☁️ Synced with Google Drive ✓ (${lastIst})`;
+        if (modalSyncBtn) modalSyncBtn.textContent = '☁️ All Synced ✓ (Sync Now with Google Drive)';
+        if (histSyncBtn) histSyncBtn.textContent = `☁️ Synced ✓ (${lastIst})`;
+        if (dashSyncBtn) dashSyncBtn.textContent = '🔄 Sync Phones ✓';
+        if (cloudText) {
+          const fullIst = state.cloudSync.lastSyncedAt ? formatISTFullDateTime(state.cloudSync.lastSyncedAt) : 'Ready';
+          cloudText.textContent = `✅ Connected to Google Drive/Sheets • Last synced: ${fullIst} (${formatTimeAgo(state.cloudSync.lastSyncedAt)})`;
+        }
+      }
+
       function scheduleCloudSync() {
         if (syncDebounceTimer) clearTimeout(syncDebounceTimer);
         syncDebounceTimer = setTimeout(() => {
           syncToGoogleCloud(true);
-        }, 1200);
+        }, 900);
       }
 
       async function syncToGoogleCloud(silent = false, forceOverwrite = false) {
         if (!state.cloudSync || !state.cloudSync.webhookUrl) {
-          if (!silent) showToast('Paste your Google Apps Script URL first in Cloud Settings', 'bg-amber-500');
+          if (!silent) openCloudModal();
           return;
         }
         const url = state.cloudSync.webhookUrl.trim();
@@ -3044,7 +3214,12 @@
           return;
         }
         if (isSyncInFlight && silent) return;
+        ensureOfflineQueueTracked();
+        const queuedIdsSnapshot = [...(state.unsyncedLogIds || [])];
+        const pendingBefore = getPendingSyncCount();
         isSyncInFlight = true;
+        updateSyncButtonsUI();
+
         const passkey = (state.cloudSync && state.cloudSync.passkey) || '';
         const useE2ee = Boolean(state.cloudSync && state.cloudSync.e2ee);
         const rawStateStr = JSON.stringify(state);
@@ -3053,25 +3228,51 @@
           : rawStateStr;
 
         state.appVersion = APP_VERSION;
+        const nowIstStr = formatISTFullDateTime(getNow());
+
+        const unsyncedSet = new Set(queuedIdsSnapshot);
+        const unsyncedLogObjs = state.logs
+          .filter(l => l && unsyncedSet.has(l.id))
+          .slice()
+          .reverse()
+          .map(l => ({
+            id: l.id,
+            timestamp: formatISTFullDateTime(l.timestamp),
+            rawIso: l.timestamp,
+            loggedBy: l.loggedBy || state.activeParent || 'Dad',
+            type: l.type,
+            summary: getLogPresentation(l).title,
+            details: getLogPresentation(l).subtitle
+          }));
+
+        const allRecentFormatted = state.logs.slice(0, 150).map(l => ({
+          id: l.id,
+          timestamp: formatISTFullDateTime(l.timestamp),
+          rawIso: l.timestamp,
+          loggedBy: l.loggedBy || state.activeParent || 'Dad',
+          type: l.type,
+          summary: getLogPresentation(l).title,
+          details: getLogPresentation(l).subtitle
+        }));
+
         const payload = {
           appVersion: APP_VERSION,
           passkey,
           forceOverwrite: Boolean(forceOverwrite),
           isEncrypted: useE2ee,
-          syncedAt: getNow().toISOString(),
+          syncedAt: nowIstStr,
+          syncedAtIST: nowIstStr,
+          timezone: 'Asia/Kolkata (IST)',
           profile: useE2ee ? { name: 'Encrypted (AES-256-GCM)' } : state.profile,
           logsCount: state.logs.length,
           deletedIds: state.deletedIds || [],
-          recentLogs: useE2ee ? [] : state.logs.slice(0, 50).map(l => ({
-            id: l.id,
-            timestamp: l.timestamp,
-            type: l.type,
-            summary: getLogPresentation(l).title,
-            details: getLogPresentation(l).subtitle
-          })),
+          unsyncedLogs: useE2ee ? [] : unsyncedLogObjs,
+          recentLogs: useE2ee ? [] : (unsyncedLogObjs.length > 0 ? unsyncedLogObjs : allRecentFormatted.slice(0, 1)),
+          allLogsIST: useE2ee ? [] : allRecentFormatted,
           milestones: useE2ee ? [] : state.milestones.filter(m => m.completed),
           fullBackupJson: backupPayloadStr
         };
+
         fetch(url, {
           method: 'POST',
           headers: { 'Content-Type': 'text/plain;charset=utf-8' },
@@ -3079,6 +3280,7 @@
         }).then(res => res.json()).then(async data => {
           isSyncInFlight = false;
           if (data && data.error === 'UNAUTHORIZED') {
+            updateSyncButtonsUI();
             if (!silent) showToast('Passkey mismatch! Set Secret Passkey to match var SECRET_PASSKEY in your Google Script (e.g. ls-family-secret-key).', 'bg-rose-500');
             return;
           }
@@ -3090,26 +3292,63 @@
           } else if (!forceOverwrite && data && data.mergedState) {
             mergeRemotePartnerState(data.mergedState);
           }
-          state.hasUnsyncedChanges = false;
-            state.cloudSync.lastSyncedAt = getNow().toISOString();
+
+          if (data && data.multiRowSync) {
+            queuedIdsSnapshot.forEach(id => knownSyncedLogIds.add(id));
+            state.unsyncedLogIds = (state.unsyncedLogIds || []).filter(id => !unsyncedSet.has(id));
+          } else if (queuedIdsSnapshot.length > 1) {
+            const firstId = queuedIdsSnapshot[0];
+            knownSyncedLogIds.add(firstId);
+            state.unsyncedLogIds = (state.unsyncedLogIds || []).filter(id => id !== firstId);
+          } else {
+            queuedIdsSnapshot.forEach(id => knownSyncedLogIds.add(id));
+            state.unsyncedLogIds = [];
+          }
+
+          state.hasUnsyncedChanges = state.unsyncedLogIds.length > 0;
+          state.cloudSync.lastSyncedAt = getNow().toISOString();
           saveState(false);
           renderAll();
-          if (!silent) showToast(useE2ee ? 'E2EE Encrypted & Synced to Shared Memory! 🛡️☁️' : 'Synced with Mom/Dad Shared Cloud Memory! 👩‍❤️‍👨☁️', 'bg-emerald-500');
+          updateSyncButtonsUI();
+
+          if (state.unsyncedLogIds.length > 0) {
+            setTimeout(() => syncToGoogleCloud(true), 400);
+          } else if (!silent || pendingBefore > 1) {
+            const msg = pendingBefore > 1
+              ? `✅ Auto-synced all ${pendingBefore} queued entries to Google Sheets (IST)!`
+              : (useE2ee ? 'E2EE Encrypted & Synced to Google Sheets (IST)! 🛡️☁️' : 'Synced with Google Drive / Sheets (IST)! 👩‍❤️‍👨☁️');
+            showToast(msg, 'bg-emerald-500');
+          }
         }).catch(() => {
-          isSyncInFlight = false;
           fetch(url, {
             method: 'POST',
             mode: 'no-cors',
             headers: { 'Content-Type': 'text/plain;charset=utf-8' },
             body: JSON.stringify(payload)
           }).then(() => {
-            state.hasUnsyncedChanges = false;
+            isSyncInFlight = false;
+            if (queuedIdsSnapshot.length > 1) {
+              const firstId = queuedIdsSnapshot[0];
+              knownSyncedLogIds.add(firstId);
+              state.unsyncedLogIds = (state.unsyncedLogIds || []).filter(id => id !== firstId);
+            } else {
+              queuedIdsSnapshot.forEach(id => knownSyncedLogIds.add(id));
+              state.unsyncedLogIds = [];
+            }
+            state.hasUnsyncedChanges = state.unsyncedLogIds.length > 0;
             state.cloudSync.lastSyncedAt = getNow().toISOString();
             saveState(false);
             renderProfileHeader();
-            if (!silent) showToast('Pushed to Shared Cloud Memory! ☁️', 'bg-emerald-500');
+            updateSyncButtonsUI();
+            if (state.unsyncedLogIds.length > 0) {
+              setTimeout(() => syncToGoogleCloud(true), 500);
+            } else if (!silent) {
+              showToast('Pushed to Shared Cloud Memory (IST)! ☁️', 'bg-emerald-500');
+            }
           }).catch(() => {
-            if (!silent) showToast('Offline — changes saved locally & will sync when online', 'bg-amber-500');
+            isSyncInFlight = false;
+            updateSyncButtonsUI();
+            if (!silent) showToast(`📡 Offline — ${getPendingSyncCount()} entry(s) queued & will auto-sync when online`, 'bg-amber-500');
           });
         });
       }
@@ -3126,6 +3365,7 @@
         let addedCount = 0;
         remote.logs.forEach(rl => {
           if (rl && rl.id && !deletedSet.has(rl.id) && !localLogIds.has(rl.id)) {
+            if (knownSyncedLogIds) knownSyncedLogIds.add(rl.id);
             state.logs.push(rl);
             addedCount++;
           }
@@ -3378,18 +3618,26 @@
 
       function formatClockTime(isoString) {
         const d = new Date(isoString);
-        return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        if (isNaN(d.getTime())) return String(isoString || '');
+        try {
+          return d.toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', hour12: true }).toUpperCase() + ' IST';
+        } catch (e) {
+          return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) + ' IST';
+        }
       }
 
       function formatShortDate(isoString) {
         const d = new Date(isoString);
-        return d.toLocaleDateString([], { month: 'short', day: 'numeric' });
+        if (isNaN(d.getTime())) return String(isoString || '');
+        try {
+          return d.toLocaleDateString('en-IN', { timeZone: 'Asia/Kolkata', day: 'numeric', month: 'short', year: 'numeric' });
+        } catch (e) {
+          return d.toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' });
+        }
       }
 
       function isSameDay(d1, d2) {
-        return d1.getFullYear() === d2.getFullYear() &&
-               d1.getMonth() === d2.getMonth() &&
-               d1.getDate() === d2.getDate();
+        return toLocalDateInputValue(d1) === toLocalDateInputValue(d2);
       }
 
       function formatVolume(ml) {
@@ -3522,8 +3770,15 @@
 
       function updateLiveClockDisplay() {
         const now = getNow();
-        const datePart = now.toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
-        const timePart = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        let datePart = '';
+        let timePart = '';
+        try {
+          datePart = now.toLocaleDateString('en-IN', { timeZone: 'Asia/Kolkata', weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+          timePart = now.toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true }).toUpperCase() + ' IST';
+        } catch (e) {
+          datePart = now.toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+          timePart = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' IST';
+        }
         const headerClock = document.getElementById('liveHeaderClockText');
         if (headerClock) headerClock.textContent = `${datePart} • ${timePart}`;
         const dashClock = document.getElementById('dashLiveDateTimeText');
@@ -3594,16 +3849,7 @@
         const pvCountEl = document.getElementById('headerPhotoVaultCount');
         if (pvCountEl) pvCountEl.textContent = `Photos (${photosCount})`;
 
-        const cloudText = document.getElementById('cloudLastSyncText');
-        const dot = document.getElementById('cloudHeaderStatusDot');
-        if (state.cloudSync && state.cloudSync.webhookUrl) {
-          dot.className = 'w-2 h-2 rounded-full bg-emerald-500 animate-pulse';
-          const syncWhen = state.cloudSync.lastSyncedAt ? formatTimeAgo(state.cloudSync.lastSyncedAt) : 'Ready';
-          cloudText.textContent = `Connected to Google Drive/Sheets • Last synced: ${syncWhen}`;
-        } else {
-          dot.className = 'w-2 h-2 rounded-full bg-amber-400';
-          cloudText.textContent = 'Local IndexedDB active • Add Google Script URL for automatic cloud backup.';
-        }
+        updateSyncButtonsUI();
       }
 
       // Render Top Status Strip & Today's Goals
@@ -4768,7 +5014,7 @@
           const entry = {
             id: 'log-' + Date.now(),
             type: 'feeding',
-            timestamp: new Date(document.getElementById('feedTimeInput').value || getNow()).toISOString(),
+            timestamp: parseISTDatetimeInputToISO(document.getElementById('feedTimeInput').value),
             method: currentFeedMethod,
             leftMin: Number(document.getElementById('feedLeftMin').value) || 0,
             rightMin: Number(document.getElementById('feedRightMin').value) || 0,
@@ -4794,7 +5040,7 @@
           const entry = {
             id: 'log-' + Date.now(),
             type: 'diaper',
-            timestamp: new Date(document.getElementById('diaperTimeInput').value || getNow()).toISOString(),
+            timestamp: parseISTDatetimeInputToISO(document.getElementById('diaperTimeInput').value),
             condition: currentDiaperType,
             size: document.getElementById('diaperSizeSelect').value,
             stoolColor: isDirty ? currentStoolColor : '',
@@ -4818,7 +5064,7 @@
           const entry = {
             id: 'log-' + Date.now(),
             type: 'sleep',
-            timestamp: new Date(document.getElementById('sleepTimeInput').value || getNow()).toISOString(),
+            timestamp: parseISTDatetimeInputToISO(document.getElementById('sleepTimeInput').value),
             durationMin: Number(document.getElementById('sleepDurationMin').value) || 60,
             location: document.getElementById('sleepLocationSelect').value,
             notes: document.getElementById('sleepNotesInput').value.trim()
@@ -4840,7 +5086,7 @@
           const entry = {
             id: 'log-' + Date.now(),
             type: 'care',
-            timestamp: new Date(document.getElementById('careTimeInput').value || getNow()).toISOString(),
+            timestamp: parseISTDatetimeInputToISO(document.getElementById('careTimeInput').value),
             subType,
             value: valStr,
             notes: document.getElementById('careNotesInput').value.trim(),
@@ -5583,6 +5829,16 @@
         document.getElementById('openCloudSyncModalBtn').addEventListener('click', openCloudModal);
         document.getElementById('dashOpenCloudBtn').addEventListener('click', openCloudModal);
         document.getElementById('historyOpenCloudModalBtn').addEventListener('click', openCloudModal);
+        const quickSyncBtn = document.getElementById('headerQuickSyncNowBtn');
+        if (quickSyncBtn) {
+          quickSyncBtn.addEventListener('click', () => {
+            if (!state.cloudSync || !state.cloudSync.webhookUrl) {
+              openCloudModal();
+            } else {
+              syncToGoogleCloud(false);
+            }
+          });
+        }
 
         document.getElementById('genPasskeyBtn').addEventListener('click', () => {
           const nk = generateRandomPasskey();
@@ -5796,7 +6052,7 @@
             "    try {",
             "      var bakSheet = ss.getSheetByName('State_Backups') || ss.insertSheet('State_Backups');",
             "      if (bakSheet.getLastRow() === 0) bakSheet.appendRow(['Backup Timestamp', 'Payload Length', 'Snapshot Chunk 1 (First 45k chars)']);",
-            "      bakSheet.appendRow([new Date().toISOString(), prevRawStr.length, prevRawStr.substring(0, CHUNK_SIZE)]);",
+            "      bakSheet.appendRow([Utilities.formatDate(new Date(), 'Asia/Kolkata', \"dd MMM yyyy, hh:mm:ss a 'IST'\"), prevRawStr.length, prevRawStr.substring(0, CHUNK_SIZE)]);",
             "      if (bakSheet.getLastRow() > 20) bakSheet.deleteRow(2);",
             "    } catch (e) {}",
             "  }",
@@ -5861,11 +6117,28 @@
             "      }",
             "    } catch (err) {}",
             "    writeRawStoredString(ss, merged, prevRaw);",
-            "    if (data.recentLogs && data.recentLogs.length > 0) {",
-            "      var latest = data.recentLogs[0];",
-            "      logSheet.appendRow([data.syncedAt, latest.id, latest.timestamp, latest.type, latest.summary, latest.details]);",
+            "    var fmtIST = function(val) {",
+            "      if (!val) return Utilities.formatDate(new Date(), 'Asia/Kolkata', \"dd MMM yyyy, hh:mm:ss a 'IST'\");",
+            "      if (String(val).indexOf('IST') !== -1) return String(val);",
+            "      var d = new Date(val);",
+            "      return isNaN(d.getTime()) ? String(val) : Utilities.formatDate(d, 'Asia/Kolkata', \"dd MMM yyyy, hh:mm:ss a 'IST'\");",
+            "    };",
+            "    var existingLogIds = {};",
+            "    var lastRow = logSheet.getLastRow();",
+            "    if (lastRow > 1) {",
+            "      var idVals = logSheet.getRange(2, 2, lastRow - 1, 1).getValues();",
+            "      for (var r = 0; r < idVals.length; r++) { if (idVals[r][0]) existingLogIds[String(idVals[r][0])] = true; }",
             "    }",
-            "    return ContentService.createTextOutput(JSON.stringify({status: 'OK', mergedState: merged})).setMimeType(ContentService.MimeType.JSON);",
+            "    var logsToAppend = (data.unsyncedLogs && data.unsyncedLogs.length > 0) ? data.unsyncedLogs : (data.recentLogs || []);",
+            "    var syncedIstStr = fmtIST(data.syncedAtIST || data.syncedAt);",
+            "    for (var i = 0; i < logsToAppend.length; i++) {",
+            "      var item = logsToAppend[i];",
+            "      if (item && item.id && !existingLogIds[String(item.id)]) {",
+            "        existingLogIds[String(item.id)] = true;",
+            "        logSheet.appendRow([syncedIstStr, item.id, fmtIST(item.timestamp || item.rawIso), item.type, item.summary, item.details]);",
+            "      }",
+            "    }",
+            "    return ContentService.createTextOutput(JSON.stringify({status: 'OK', multiRowSync: true, mergedState: merged})).setMimeType(ContentService.MimeType.JSON);",
             "  } finally {",
             "    lock.releaseLock();",
             "  }",
@@ -5972,14 +6245,15 @@
         document.getElementById('historyTypeFilter').addEventListener('change', renderHistoryTable);
         document.getElementById('historyDateFilter').addEventListener('change', renderHistoryTable);
 
-        // Export CSV
+        // Export CSV (Explicitly in IST)
         document.getElementById('exportCsvBtn').addEventListener('click', () => {
-          const rows = [['Timestamp', 'Category', 'Summary', 'Details']];
+          const rows = [['Date & Time (IST)', 'Category', 'Logged By', 'Summary', 'Details']];
           state.logs.forEach(l => {
             const info = getLogPresentation(l);
             rows.push([
-              l.timestamp,
+              `"${formatISTFullDateTime(l.timestamp)}"`,
               l.type,
+              l.loggedBy || 'Mom/Dad',
               `"${info.title.replace(/"/g, '""')}"`,
               `"${info.subtitle.replace(/"/g, '""')}"`
             ]);
@@ -6307,9 +6581,18 @@
       }
 
       window.addEventListener('online', () => {
+        updateSyncButtonsUI();
         if (state.cloudSync && state.cloudSync.autoSync && state.cloudSync.webhookUrl) {
+          const pending = getPendingSyncCount();
+          if (pending > 0) {
+            showToast(`📡 Back online! Auto-syncing ${pending} queued entry(s) to Google Sheets (IST)...`, 'bg-sky-500');
+          }
           syncToGoogleCloud(true);
         }
+      });
+      window.addEventListener('offline', () => {
+        updateSyncButtonsUI();
+        showToast('📡 Offline Mode: Entries are queued locally & will auto-sync when internet returns', 'bg-amber-500');
       });
       document.addEventListener('visibilitychange', () => {
         if (document.visibilityState === 'visible') {
