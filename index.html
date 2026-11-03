@@ -107,7 +107,7 @@
           </button>
           <div>
             <div class="flex items-center gap-2">
-              <h1 id="babyNameDisplay" class="text-lg font-bold tracking-tight text-slate-900 dark:text-white">Baby Aarav</h1>
+              <h1 id="babyNameDisplay" class="text-lg font-bold tracking-tight text-slate-900 dark:text-white">Agastya</h1>
               <span id="babyAgeBadge" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-rose-100 text-rose-700 dark:bg-rose-950/80 dark:text-rose-300 border border-rose-200/60 dark:border-rose-800/60">
                 3 weeks old
               </span>
@@ -118,7 +118,7 @@
               </button>
             </div>
             <p id="babyStatsSubtext" class="text-xs text-slate-500 dark:text-slate-400">
-              Born Oct 12, 2026 • Current: 3.65 kg • 51.5 cm
+              Born Oct 19, 2026 (9:49 AM) • Current: 2.70 kg • 51 cm
             </p>
           </div>
         </div>
@@ -178,7 +178,7 @@
         <button type="button" data-tab="milestones" class="nav-tab-btn flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition whitespace-nowrap">
           <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
           Milestones
-          <span id="milestoneCountBadge" class="ml-1 px-1.5 py-0.2 rounded-full text-[11px] bg-amber-100 text-amber-800 dark:bg-amber-900/60 dark:text-amber-200 font-semibold">6/20</span>
+          <span id="milestoneCountBadge" class="ml-1 px-1.5 py-0.2 rounded-full text-[11px] bg-amber-100 text-amber-800 dark:bg-amber-900/60 dark:text-amber-200 font-semibold">0/20</span>
         </button>
         <button type="button" data-tab="calendar" class="nav-tab-btn flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition whitespace-nowrap">
           <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
@@ -325,7 +325,7 @@
                 <span class="px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider bg-rose-50 text-rose-600 dark:bg-rose-950/70 dark:text-rose-300">Newborn Profile</span>
                 <span id="storageEngineBadge" class="px-2 py-0.5 rounded-md text-[10px] font-semibold bg-emerald-50 text-emerald-700 dark:bg-emerald-950/70 dark:text-emerald-300">IndexedDB Ready</span>
               </div>
-              <h2 id="dashboardBabyName" class="text-xl font-bold text-slate-900 dark:text-white mt-1 truncate">Baby Aarav</h2>
+              <h2 id="dashboardBabyName" class="text-xl font-bold text-slate-900 dark:text-white mt-1 truncate">Agastya</h2>
               <p id="dashboardBabyAgeText" class="text-xs font-medium text-slate-500 dark:text-slate-400">3 weeks old • Born Oct 12, 2026</p>
               <div class="grid grid-cols-3 gap-2 mt-3 pt-2.5 border-t border-slate-100 dark:border-slate-800 text-center">
                 <div>
@@ -1298,11 +1298,12 @@
               <h3 class="text-xs font-bold text-slate-900 dark:text-white">☁️ Live Auto-Sync Status</h3>
               <p id="cloudLastSyncText" class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">IndexedDB active • Connect your Google Sheet URL for automatic cloud backup on every entry.</p>
             </div>
-            <div class="flex items-center justify-between pt-1">
+            <div class="flex flex-wrap items-center justify-between gap-1.5 pt-1">
               <span id="idbRecordCountBadge" class="text-[11px] font-semibold text-indigo-600 dark:text-indigo-400">Saved in IndexedDB</span>
-              <button id="restoreDemoDataBtn" type="button" class="px-2.5 py-1 rounded-lg text-[11px] font-medium bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 transition">
-                Reset Demo Data
-              </button>
+              <div class="hidden">
+                <button id="clearAllDemoDataBtn" type="button">🗑️ Clear Demo Data (Start Fresh)</button>
+                <button id="restoreDemoDataBtn" type="button">Reset Demo Data</button>
+              </div>
             </div>
           </div>
         </div>
@@ -1406,14 +1407,18 @@
             <input id="profBirthWeight" type="number" step="0.01" required class="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-xs font-semibold" />
           </div>
         </div>
-        <div class="grid grid-cols-2 gap-3">
+        <div class="grid grid-cols-3 gap-2.5">
           <div>
-            <label for="profCurrWeight" class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">Current Weight (kg)</label>
-            <input id="profCurrWeight" type="number" step="0.01" required class="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm" />
+            <label for="profBirthLength" class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">Birth Length (cm)</label>
+            <input id="profBirthLength" type="number" step="0.1" value="50" required class="w-full px-2.5 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-xs font-semibold" />
           </div>
           <div>
-            <label for="profCurrLength" class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">Current Length (cm)</label>
-            <input id="profCurrLength" type="number" step="0.1" required class="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm" />
+            <label for="profCurrWeight" class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">Current Wt (kg)</label>
+            <input id="profCurrWeight" type="number" step="0.01" required class="w-full px-2.5 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-xs font-semibold" />
+          </div>
+          <div>
+            <label for="profCurrLength" class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">Current Len (cm)</label>
+            <input id="profCurrLength" type="number" step="0.1" required class="w-full px-2.5 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-xs font-semibold" />
           </div>
         </div>
         <div class="flex justify-end gap-2 pt-2">
@@ -1707,6 +1712,29 @@
     </div>
   </div>
 
+  <!-- ========================================== -->
+  <!-- MODAL 8: CLEAR DEMO DATA CONFIRMATION      -->
+  <!-- ========================================== -->
+  <div id="clearDemoConfirmModal" class="fixed inset-0 z-50 hidden bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 rounded-2xl max-w-md w-full p-6 border border-slate-200 dark:border-slate-800 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between">
+        <h3 class="text-base font-bold text-slate-900 dark:text-white">🗑️ Clear All Demo Data &amp; Start Fresh?</h3>
+        <button id="closeClearDemoModalBtn" type="button" class="text-slate-400 hover:text-slate-600 p-1">✕</button>
+      </div>
+      <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+        This will delete all pre-loaded sample feeding, nappy, sleep, and care logs, clear the 6 sample milestone completions/photos, and reset the weight chart—while <strong>keeping your Baby’s Profile (Name, Birth Date, Due Date, Face Photo)</strong> and <strong>keeping your Mom &amp; Dad Cloud Sync link</strong> intact.
+      </p>
+      <div class="flex justify-end gap-2 pt-2">
+        <button id="cancelClearDemoBtn" type="button" class="px-4 py-2 rounded-xl text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
+          Cancel
+        </button>
+        <button id="confirmClearDemoBtn" type="button" class="px-4 py-2 rounded-xl text-xs font-bold bg-rose-600 hover:bg-rose-700 text-white shadow-sm transition">
+          Yes, Clear All Demo Data
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- Sticky Mobile Bottom Thumb Navigation Bar for One-Handed Use -->
   <div class="fixed bottom-0 inset-x-0 z-40 sm:hidden bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 px-2 py-1.5 grid grid-cols-5 gap-1 text-center shadow-lg">
     <button type="button" data-mobtab="overview" class="mob-nav-btn py-1 rounded-lg text-[10px] font-bold text-rose-600 dark:text-rose-400 flex flex-col items-center">
@@ -1728,7 +1756,15 @@
 
   <script>
     (function () {
-      const STORAGE_KEY = 'littlesteps_newborn_tracker_v2';
+      const STORAGE_KEY = 'littlesteps_agastya_prod_v1';
+      // Purge any legacy demo cache keys on device startup
+      try {
+        localStorage.removeItem('littlesteps_newborn_tracker_v1');
+        localStorage.removeItem('littlesteps_newborn_tracker_v2');
+        if (window.indexedDB && window.indexedDB.deleteDatabase) {
+          window.indexedDB.deleteDatabase('LittleStepsNewbornDB');
+        }
+      } catch (e) {}
 
       // Helper for current reference date (Nov 2, 2026 or user clock)
       function getNow() {
@@ -1953,9 +1989,11 @@
         reader.readAsDataURL(file);
       }
 
-      // Build standard Newborn Ceremonies, Monthly Birthdays & Vaccination Schedule from Birth Date
-      function buildDefaultCalendarEvents(dobStr) {
-        const base = new Date(dobStr + 'T09:00:00');
+      // Build standard Newborn Ceremonies, Monthly Birthdays & Vaccination Schedule dynamically from Baby's Birth Date & Time
+      function buildDefaultCalendarEvents(dobStr, birthTimeStr = '09:49') {
+        const cleanDob = dobStr || '2026-10-19';
+        const cleanTime = birthTimeStr || '09:49';
+        const base = new Date(`${cleanDob}T${cleanTime}:00`);
         function addDays(d) {
           const dt = new Date(base);
           dt.setDate(dt.getDate() + d);
@@ -1969,69 +2007,86 @@
         return [
           {
             id: 'cal-birth-vax',
-            title: 'Birth Dose Vaccinations (BCG, OPV-0, Hep B-1)',
-            date: addDays(1),
+            offsetType: 'days',
+            offsetVal: 0,
+            title: 'Birth Dose Vaccinations (BCG, OPV-0, Hepatitis B-1)',
+            date: addDays(0),
             category: 'Vaccination',
-            notes: 'Given at hospital before discharge: BCG, Oral Polio (OPV-0), and Hepatitis B Birth Dose.',
+            notes: `3-in-1 birth immunizations (BCG, OPV-0, Hep B-1) completed on birth date (${cleanDob}).`,
             reminder: true,
-            completed: true
+            completed: true,
+            updatedAt: Date.now()
           },
           {
             id: 'cal-day6',
+            offsetType: 'days',
+            offsetVal: 5,
             title: 'Chhathi Ceremony (6th Day Blessing)',
             date: addDays(5),
             category: 'Ceremony',
-            notes: 'Traditional 6th day blessing for baby’s health and good fortune.',
+            notes: 'Traditional 6th day of life blessing for baby’s health and wellbeing.',
             reminder: true,
-            completed: true
+            completed: false
           },
           {
             id: 'cal-day12',
-            title: '12th Day Cradle Blessing (Baras)',
+            offsetType: 'days',
+            offsetVal: 11,
+            title: '12th Day Cradle Ceremony (Baras)',
             date: addDays(11),
             category: 'Ceremony',
-            notes: 'Placing baby in the decorated cradle with family blessings.',
+            notes: '12th day of life cradle blessing ceremony.',
             reminder: true,
-            completed: true
+            completed: false
           },
           {
             id: 'cal-day21-naamkaran',
+            offsetType: 'days',
+            offsetVal: 20,
             title: '21st Day Naming Ceremony (Naamkaran)',
-            date: addDays(21),
+            date: addDays(20),
             category: 'Ceremony',
-            notes: 'Special 21st day Naming Ceremony! Whispering baby’s official name and celebrating with loved ones.',
+            notes: `21st day of life Naming Ceremony (counting ${cleanDob} as Day 1; +21 days from birth is ${addDays(21)}).`,
             reminder: true,
             completed: false
           },
           {
             id: 'cal-m1-bday',
+            offsetType: 'months',
+            offsetVal: 1,
             title: '1-Month Birthday (Monthiversary #1) 🎂',
             date: addMonths(1),
             category: 'Monthly Birthday',
-            notes: 'Baby turns 1 month old! Take 1-month milestone keepsake photo and log weight/length.',
+            notes: `1 month since birth (${cleanTime})! Capture 1-month keepsake photo and log weight & length.`,
             reminder: true,
             completed: false
           },
           {
             id: 'cal-day40',
+            offsetType: 'days',
+            offsetVal: 39,
             title: '40th Day Blessing & First Outing',
-            date: addDays(40),
+            date: addDays(39),
             category: 'Ceremony',
-            notes: '40-day newborn milestone and first family temple/park visit.',
+            notes: '40th day newborn milestone and family blessing.',
             reminder: true,
             completed: false
           },
           {
             id: 'cal-6w-vax',
-            title: '6-Week Vaccinations (DTaP-1, IPV-1, Hib-1, Hep B-2, Rotavirus-1, PCV-1)',
+            offsetType: 'days',
+            offsetVal: 42,
+            title: '6-Week Vaccinations (DTwP/DTaP-1, IPV-1, Hib-1, Hep B-2, Rotavirus-1, PCV-1)',
             date: addDays(42),
             category: 'Vaccination',
-            notes: 'First major immunization visit at 6 weeks. Carry vaccination card and ask doctor about fever drops.',
+            notes: '6-week primary immunization visit (exact +42 days from birth). Carry immunization card.',
             reminder: true,
             completed: false
           },
           {
             id: 'cal-m2-bday',
+            offsetType: 'months',
+            offsetVal: 2,
             title: '2-Month Birthday (Monthiversary #2) 🎂',
             date: addMonths(2),
             category: 'Monthly Birthday',
@@ -2041,33 +2096,41 @@
           },
           {
             id: 'cal-10w-vax',
-            title: '10-Week Vaccinations (DTaP-2, IPV-2, Hib-2, Rotavirus-2, PCV-2)',
+            offsetType: 'days',
+            offsetVal: 70,
+            title: '10-Week Vaccinations (DTwP/DTaP-2, IPV-2, Hib-2, Rotavirus-2, PCV-2)',
             date: addDays(70),
             category: 'Vaccination',
-            notes: 'Second round of primary infant immunizations at 10 weeks.',
+            notes: '10-week immunization visit (+70 days from birth).',
             reminder: true,
             completed: false
           },
           {
             id: 'cal-m3-bday',
+            offsetType: 'months',
+            offsetVal: 3,
             title: '3-Month Birthday (Monthiversary #3) 🎂',
             date: addMonths(3),
             category: 'Monthly Birthday',
-            notes: 'Baby turns 3 months old! Celebrate 4th trimester graduation.',
+            notes: 'Baby turns 3 months old! Celebrate fourth-trimester graduation.',
             reminder: true,
             completed: false
           },
           {
             id: 'cal-14w-vax',
-            title: '14-Week Vaccinations (DTaP-3, IPV-3, Hib-3, Hep B-3, Rotavirus-3, PCV-3)',
+            offsetType: 'days',
+            offsetVal: 98,
+            title: '14-Week Vaccinations (DTwP/DTaP-3, IPV-3, Hib-3, Hep B-3, Rotavirus-3, PCV-3)',
             date: addDays(98),
             category: 'Vaccination',
-            notes: 'Third round of primary infant immunizations at 14 weeks.',
+            notes: '14-week immunization visit (+98 days from birth).',
             reminder: true,
             completed: false
           },
           {
             id: 'cal-m4-bday',
+            offsetType: 'months',
+            offsetVal: 4,
             title: '4-Month Birthday (Monthiversary #4) 🎂',
             date: addMonths(4),
             category: 'Monthly Birthday',
@@ -2077,6 +2140,8 @@
           },
           {
             id: 'cal-m5-bday',
+            offsetType: 'months',
+            offsetVal: 5,
             title: '5-Month Birthday (Monthiversary #5) 🎂',
             date: addMonths(5),
             category: 'Monthly Birthday',
@@ -2086,15 +2151,19 @@
           },
           {
             id: 'cal-m6-annaprashan',
+            offsetType: 'months',
+            offsetVal: 6,
             title: '6-Month Half-Birthday & Annaprashan (First Solids Ceremony) 🥣',
             date: addMonths(6),
             category: 'Ceremony',
-            notes: 'Half-birthday celebration & traditional Annaprashan (first taste of solid food)!',
+            notes: 'Half-birthday celebration & traditional Annaprashan (first solid food)!',
             reminder: true,
             completed: false
           },
           {
             id: 'cal-6m-vax',
+            offsetType: 'months',
+            offsetVal: 6,
             title: '6-Month Vaccinations (Influenza Dose 1 & OPV-1)',
             date: addMonths(6),
             category: 'Vaccination',
@@ -2103,213 +2172,154 @@
             completed: false
           },
           {
+            id: 'cal-m7-bday',
+            offsetType: 'months',
+            offsetVal: 7,
+            title: '7-Month Birthday (Monthiversary #7) 🎂',
+            date: addMonths(7),
+            category: 'Monthly Birthday',
+            notes: '7 months old monthly birthday reminder!',
+            reminder: true,
+            completed: false
+          },
+          {
+            id: 'cal-m8-bday',
+            offsetType: 'months',
+            offsetVal: 8,
+            title: '8-Month Birthday (Monthiversary #8) 🎂',
+            date: addMonths(8),
+            category: 'Monthly Birthday',
+            notes: '8 months old monthly birthday reminder!',
+            reminder: true,
+            completed: false
+          },
+          {
+            id: 'cal-9m-vax',
+            offsetType: 'months',
+            offsetVal: 9,
+            title: '9-Month Birthday & MMR-1 / OPV-2 / Vitamin A Vaccination 💉',
+            date: addMonths(9),
+            category: 'Vaccination',
+            notes: '9-month immunization visit (MMR Dose 1, Typhoid Conjugate Vaccine) & 9-month birthday.',
+            reminder: true,
+            completed: false
+          },
+          {
+            id: 'cal-m10-bday',
+            offsetType: 'months',
+            offsetVal: 10,
+            title: '10-Month Birthday (Monthiversary #10) 🎂',
+            date: addMonths(10),
+            category: 'Monthly Birthday',
+            notes: '10 months old monthly birthday reminder!',
+            reminder: true,
+            completed: false
+          },
+          {
+            id: 'cal-m11-bday',
+            offsetType: 'months',
+            offsetVal: 11,
+            title: '11-Month Birthday (Monthiversary #11) 🎂',
+            date: addMonths(11),
+            category: 'Monthly Birthday',
+            notes: '11 months old monthly birthday reminder!',
+            reminder: true,
+            completed: false
+          },
+          {
             id: 'cal-m12-bday',
-            title: 'Baby’s 1st Birthday Celebration! 🎉🎂',
+            offsetType: 'months',
+            offsetVal: 12,
+            title: '1st Birthday Celebration! 🎉🎂',
             date: addMonths(12),
             category: 'Monthly Birthday',
-            notes: 'One whole year of wonderful memories!',
+            notes: 'One whole year of wonderful memories! (Also 12-month Hepatitis A-1 / checkup).',
             reminder: true,
             completed: false
           }
         ];
       }
 
-      // Build realistic initial state for a 3-week-old newborn
-      function createDefaultState() {
-        const birthDate = new Date(getNow());
-        birthDate.setDate(birthDate.getDate() - 21);
-        const birthDateStr = toLocalDateInputValue(birthDate);
-        const dueDateObj = new Date(birthDate);
-        dueDateObj.setDate(dueDateObj.getDate() + 10); // Born 10 days before original due date (38w 4d)
-        const dueDateStr = toLocalDateInputValue(dueDateObj);
+      // Dynamically reorient standard calendar events whenever Baby's Birth Date or Time changes
+      function reorientCalendarEventsToBirthDate(existingEvents, dobStr, birthTimeStr) {
+        const freshTemplates = buildDefaultCalendarEvents(dobStr, birthTimeStr);
+        const existingMap = new Map((existingEvents || []).map(e => [e.id, e]));
+        const reoriented = freshTemplates.map(tpl => {
+          if (existingMap.has(tpl.id)) {
+            const prev = existingMap.get(tpl.id);
+            return {
+              ...tpl,
+              completed: Boolean(prev.completed),
+              reminder: prev.reminder !== undefined ? Boolean(prev.reminder) : true,
+              updatedAt: Date.now()
+            };
+          }
+          return tpl;
+        });
+        const customEvents = (existingEvents || []).filter(e => e && String(e.id).startsWith('cal-custom-'));
+        return [...reoriented, ...customEvents];
+      }
 
-        const defaultLogs = [
-          // Today's logs
-          {
-            id: 'log-1',
-            type: 'feeding',
-            timestamp: hoursAgoISO(1, 15),
-            method: 'breast',
-            leftMin: 12,
-            rightMin: 10,
-            startSide: 'Left',
-            amountMl: 0,
-            burped: true,
-            spitup: false,
-            notes: 'Strong latch, fell asleep on right side'
-          },
-          {
-            id: 'log-2',
-            type: 'diaper',
-            timestamp: hoursAgoISO(0, 45),
-            condition: 'both',
-            size: 'Heavy',
-            stoolColor: 'Mustard Yellow',
-            stoolTexture: 'Seeded / Mustard',
-            rash: false,
-            notes: 'Healthy seeded yellow stool after feeding'
-          },
-          {
-            id: 'log-3',
-            type: 'sleep',
-            timestamp: hoursAgoISO(2, 40),
-            durationMin: 95,
-            location: 'Bassinet (Swaddled)',
-            notes: 'Woke up stretching and rooting'
-          },
-          {
-            id: 'log-4',
-            type: 'feeding',
-            timestamp: hoursAgoISO(4, 10),
-            method: 'bottle_milk',
-            leftMin: 0,
-            rightMin: 0,
-            startSide: 'Left',
-            amountMl: 75,
-            burped: true,
-            spitup: false,
-            notes: 'Partner gave expressed milk bottle'
-          },
-          {
-            id: 'log-5',
-            type: 'diaper',
-            timestamp: hoursAgoISO(3, 50),
-            condition: 'wet',
-            size: 'Medium',
-            stoolColor: '',
-            stoolTexture: '',
-            rash: false,
-            notes: 'Clear wet nappy'
-          },
-          {
-            id: 'log-6',
-            type: 'care',
-            timestamp: hoursAgoISO(5, 0),
-            subType: 'Tummy Time',
-            value: '8 min',
-            notes: 'Turned head from side to side on play mat!',
-            photoDataUrl: createKeepsakeSvgDataUri('Morning Tummy Time', '8 mins on high-contrast play mat', 'emerald', '🧸')
-          },
-          {
-            id: 'log-7',
-            type: 'care',
-            timestamp: hoursAgoISO(6, 0),
-            subType: 'Vitamin D Drops',
-            value: '400 IU (1 drop)',
-            notes: 'Daily morning vitamin D drop'
-          },
-          {
-            id: 'log-8',
-            type: 'feeding',
-            timestamp: hoursAgoISO(7, 15),
-            method: 'breast',
-            leftMin: 14,
-            rightMin: 12,
-            startSide: 'Right',
-            amountMl: 0,
-            burped: true,
-            spitup: true,
-            notes: 'Small spit-up after burping'
-          },
-          {
-            id: 'log-9',
-            type: 'diaper',
-            timestamp: hoursAgoISO(6, 55),
-            condition: 'wet',
-            size: 'Heavy',
-            stoolColor: '',
-            stoolTexture: '',
-            rash: false,
-            notes: 'Overnight heavy wet nappy'
-          },
-          {
-            id: 'log-10',
-            type: 'sleep',
-            timestamp: hoursAgoISO(8, 30),
-            durationMin: 165,
-            location: 'Bassinet (Swaddled)',
-            notes: 'Longest night stretch so far!'
-          },
-          {
-            id: 'log-11',
-            type: 'diaper',
-            timestamp: hoursAgoISO(9, 20),
-            condition: 'dirty',
-            size: 'Medium',
-            stoolColor: 'Mustard Yellow',
-            stoolTexture: 'Seeded / Mustard',
-            rash: false,
-            notes: ''
-          },
-          {
-            id: 'log-12',
-            type: 'feeding',
-            timestamp: hoursAgoISO(10, 0),
-            method: 'breast',
-            leftMin: 11,
-            rightMin: 11,
-            startSide: 'Left',
-            amountMl: 0,
-            burped: true,
-            spitup: false,
-            notes: 'Calm night feed'
-          }
-        ];
-
-        // Add multi-day historical entries for rich 7-day charts
-        for (let d = 1; d <= 6; d++) {
-          const feedsCount = 8 + (d % 2);
-          for (let f = 0; f < feedsCount; f++) {
-            const isBottle = f === 2 || (d % 2 === 0 && f === 5);
-            defaultLogs.push({
-              id: `hist-f-${d}-${f}`,
-              type: 'feeding',
-              timestamp: daysAgoISO(d, 2 + f * 2),
-              method: isBottle ? 'bottle_milk' : 'breast',
-              leftMin: isBottle ? 0 : 12,
-              rightMin: isBottle ? 0 : 10,
-              startSide: f % 2 === 0 ? 'Left' : 'Right',
-              amountMl: isBottle ? 70 : 0,
-              burped: true,
-              spitup: false,
-              notes: 'Logged feeding'
-            });
-          }
-          const wetCount = 6 + (d % 3);
-          for (let w = 0; w < wetCount; w++) {
-            const isBoth = w < 3;
-            defaultLogs.push({
-              id: `hist-d-${d}-${w}`,
-              type: 'diaper',
-              timestamp: daysAgoISO(d, 3 + w * 2),
-              condition: isBoth ? 'both' : 'wet',
-              size: 'Medium',
-              stoolColor: isBoth ? 'Mustard Yellow' : '',
-              stoolTexture: isBoth ? 'Seeded / Mustard' : '',
-              rash: false,
-              notes: ''
-            });
-          }
-          // Daily sleep entries (~14.5 - 16 hours total)
-          const sleepMins = [180, 150, 140, 160, 150, 145];
-          sleepMins.forEach((m, idx) => {
-            defaultLogs.push({
-              id: `hist-s-${d}-${idx}`,
-              type: 'sleep',
-              timestamp: daysAgoISO(d, 1 + idx * 3),
-              durationMin: m + (d % 2) * 10,
-              location: 'Bassinet (Swaddled)',
-              notes: ''
-            });
+      // Sanitize out any legacy demo data ("Baby Aarav", log-1..12, hist-f/d/s) if pulled from an old Google Sheet tab
+      function sanitizeOutLegacyDemoData(st) {
+        if (!st || typeof st !== 'object') return st;
+        const isDemoLogId = id => /^(log-([1-9]|1[0-2])|hist-[fds]-\d+-\d+)$/.test(String(id || ''));
+        if (Array.isArray(st.logs)) {
+          st.logs = st.logs.filter(l => l && !isDemoLogId(l.id));
+        }
+        if (st.profile && st.profile.name === 'Baby Aarav') {
+          st.profile.name = 'Agastya';
+          st.profile.dob = '2026-10-19';
+          st.profile.birthTime = '09:49';
+          st.profile.dueDate = '2026-10-19';
+          st.profile.birthWeightKg = 2.54;
+          st.profile.birthLengthCm = 50.0;
+          st.profile.currentWeightKg = 2.70;
+          st.profile.currentLengthCm = 51.0;
+        }
+        if (Array.isArray(st.milestones)) {
+          const demoMemories = new Set([
+            'Slept the entire drive home while we drove 30 km/h in the slow lane!',
+            'Came off cleanly during morning nappy change on Day 10.',
+            'Pediatrician checkup: weighed 3.42 kg (above 3.30 kg birth weight)!',
+            'Loved the warm water poured over tummy with a soft washcloth.',
+            'Stared straight into my eyes for a full minute after morning nurse.',
+            'Calms down immediately when swaddled snugly.'
+          ]);
+          st.milestones.forEach(m => {
+            if (m && demoMemories.has(m.memory)) {
+              m.completed = false;
+              m.dateAchieved = '';
+              m.memory = '';
+              m.photoDataUrl = '';
+            }
           });
         }
+        if (Array.isArray(st.weightHistory)) {
+          const hasOldDemoWeights = st.weightHistory.some(w => w && (w.kg === 3.08 || w.kg === 3.42 || w.kg === 3.65));
+          if (hasOldDemoWeights) {
+            st.weightHistory = [
+              { label: 'Birth (19 Oct)', kg: (st.profile && st.profile.birthWeightKg) || 2.54 },
+              { label: 'Today (3 Nov)', kg: (st.profile && st.profile.currentWeightKg) || 2.70 }
+            ];
+          }
+        }
+        if (st.profile && st.profile.dob) {
+          st.calendarEvents = reorientCalendarEventsToBirthDate(st.calendarEvents, st.profile.dob, st.profile.birthTime || '09:49');
+        }
+        return st;
+      }
 
-        const d20 = new Date(getNow()); d20.setDate(d20.getDate() - 20);
-        const d15 = new Date(getNow()); d15.setDate(d15.getDate() - 15);
-        const d11 = new Date(getNow()); d11.setDate(d11.getDate() - 11);
-        const d7 = new Date(getNow()); d7.setDate(d7.getDate() - 7);
-        const d3 = new Date(getNow()); d3.setDate(d3.getDate() - 3);
+      // Build clean, zero-demo production state for Agastya (Born 19 Oct 2026 at 09:49 AM)
+      function createDefaultState() {
+        const birthDateStr = '2026-10-19';
+        const birthTimeStr = '09:49';
+        const dueDateStr = '2026-10-19';
 
+        // Zero pre-fed daily activity logs — starts completely clean!
+        const defaultLogs = [];
+
+        // All 20 developmental milestones start uncompleted (0/20) ready for Agastya's real moments
         const defaultMilestones = [
           {
             id: 'm-1',
@@ -2317,10 +2327,10 @@
             stage: 'Firsts',
             category: 'Memory',
             description: 'Coming home from the hospital safely buckled into the rear-facing infant seat.',
-            completed: true,
-            dateAchieved: toLocalDateInputValue(d20),
-            memory: 'Slept the entire drive home while we drove 30 km/h in the slow lane!',
-            photoDataUrl: createKeepsakeSvgDataUri('Going Home Day!', 'Tiny newborn in the car seat', 'rose', '🚗')
+            completed: false,
+            dateAchieved: '',
+            memory: '',
+            photoDataUrl: ''
           },
           {
             id: 'm-2',
@@ -2328,21 +2338,21 @@
             stage: 'Firsts',
             category: 'Physical Care',
             description: 'Umbilical cord dries and naturally separates (typically between days 7 and 14).',
-            completed: true,
-            dateAchieved: toLocalDateInputValue(d11),
-            memory: 'Came off cleanly during morning nappy change on Day 10.',
+            completed: false,
+            dateAchieved: '',
+            memory: '',
             photoDataUrl: ''
           },
           {
             id: 'm-3',
-            title: 'Regained Birth Weight',
+            title: 'Regained & Surpassed Birth Weight',
             stage: 'Weeks 1-4',
             category: 'Growth',
-            description: 'Rebounding from initial newborn fluid loss back to or above birth weight by 2 weeks.',
-            completed: true,
-            dateAchieved: toLocalDateInputValue(d7),
-            memory: 'Pediatrician checkup: weighed 3.42 kg (above 3.30 kg birth weight)!',
-            photoDataUrl: createKeepsakeSvgDataUri('3.42 kg Checkup Victory!', 'Passed birth weight at 2 weeks', 'amber', '⚖️')
+            description: 'Rebounding from initial newborn fluid loss back to or above birth weight.',
+            completed: false,
+            dateAchieved: '',
+            memory: '',
+            photoDataUrl: ''
           },
           {
             id: 'm-4',
@@ -2350,10 +2360,10 @@
             stage: 'Firsts',
             category: 'Memory',
             description: 'Transitioning from gentle sponge baths to first warm baby tub bath after cord healing.',
-            completed: true,
-            dateAchieved: toLocalDateInputValue(d7),
-            memory: 'Loved the warm water poured over tummy with a soft washcloth.',
-            photoDataUrl: createKeepsakeSvgDataUri('First Warm Tub Bath', 'Cozy hooded towel & rubber ducky', 'sky', '🛁')
+            completed: false,
+            dateAchieved: '',
+            memory: '',
+            photoDataUrl: ''
           },
           {
             id: 'm-5',
@@ -2361,10 +2371,10 @@
             stage: 'Weeks 1-4',
             category: 'Visual & Sensory',
             description: 'Locks eyes intently on your face during feedings or quiet alert windows.',
-            completed: true,
-            dateAchieved: toLocalDateInputValue(d15),
-            memory: 'Stared straight into my eyes for a full minute after morning nurse.',
-            photoDataUrl: createKeepsakeSvgDataUri('Sweet Eye Contact', 'Staring intently after morning feed', 'rose', '👀')
+            completed: false,
+            dateAchieved: '',
+            memory: '',
+            photoDataUrl: ''
           },
           {
             id: 'm-6',
@@ -2372,9 +2382,10 @@
             stage: 'Weeks 1-4',
             category: 'Hearing & Reflex',
             description: 'Reacts to sudden noises or movement by extending arms and legs, then pulling in.',
-            completed: true,
-            dateAchieved: toLocalDateInputValue(d20),
-            memory: 'Calms down immediately when swaddled snugly.'
+            completed: false,
+            dateAchieved: '',
+            memory: '',
+            photoDataUrl: ''
           },
           {
             id: 'm-7',
@@ -2384,7 +2395,8 @@
             description: 'Briefly raises chin and turns head from cheek to cheek while on tummy.',
             completed: false,
             dateAchieved: '',
-            memory: ''
+            memory: '',
+            photoDataUrl: ''
           },
           {
             id: 'm-8',
@@ -2394,7 +2406,8 @@
             description: 'Recognizes familiar voices and scent, settling when held close.',
             completed: false,
             dateAchieved: '',
-            memory: ''
+            memory: '',
+            photoDataUrl: ''
           },
           {
             id: 'm-9',
@@ -2404,7 +2417,8 @@
             description: 'Smiles intentionally in response to seeing your face or hearing your voice (not just reflex!).',
             completed: false,
             dateAchieved: '',
-            memory: ''
+            memory: '',
+            photoDataUrl: ''
           },
           {
             id: 'm-10',
@@ -2414,7 +2428,8 @@
             description: 'Follows a high-contrast rattle or face smoothly with both eyes from side to side.',
             completed: false,
             dateAchieved: '',
-            memory: ''
+            memory: '',
+            photoDataUrl: ''
           },
           {
             id: 'm-11',
@@ -2424,7 +2439,8 @@
             description: 'Begins musical coos and gurgles during back-and-forth "conversations."',
             completed: false,
             dateAchieved: '',
-            memory: ''
+            memory: '',
+            photoDataUrl: ''
           },
           {
             id: 'm-12',
@@ -2434,7 +2450,8 @@
             description: 'Stronger neck and upper back control while propped on forearms.',
             completed: false,
             dateAchieved: '',
-            memory: ''
+            memory: '',
+            photoDataUrl: ''
           },
           {
             id: 'm-13',
@@ -2444,7 +2461,8 @@
             description: 'Unfists newborn hands and begins swiping at dangling toys.',
             completed: false,
             dateAchieved: '',
-            memory: ''
+            memory: '',
+            photoDataUrl: ''
           },
           {
             id: 'm-14',
@@ -2454,7 +2472,8 @@
             description: 'Sleeping a longer uninterrupted stretch at night.',
             completed: false,
             dateAchieved: '',
-            memory: ''
+            memory: '',
+            photoDataUrl: ''
           },
           {
             id: 'm-15',
@@ -2464,7 +2483,8 @@
             description: 'Delighted vocal chuckles and early giggles during playful interaction.',
             completed: false,
             dateAchieved: '',
-            memory: ''
+            memory: '',
+            photoDataUrl: ''
           },
           {
             id: 'm-16',
@@ -2474,7 +2494,8 @@
             description: 'Holds head and chest up to 90 degrees during tummy time.',
             completed: false,
             dateAchieved: '',
-            memory: ''
+            memory: '',
+            photoDataUrl: ''
           },
           {
             id: 'm-17',
@@ -2484,7 +2505,8 @@
             description: 'Clasps hands at midline and watches own fingers with fascination.',
             completed: false,
             dateAchieved: '',
-            memory: ''
+            memory: '',
+            photoDataUrl: ''
           },
           {
             id: 'm-18',
@@ -2494,7 +2516,8 @@
             description: 'Reaches toward hanging gym toys and holds a light rattle placed in hand.',
             completed: false,
             dateAchieved: '',
-            memory: ''
+            memory: '',
+            photoDataUrl: ''
           },
           {
             id: 'm-19',
@@ -2504,7 +2527,8 @@
             description: 'Enjoying fresh air and looking at tree canopy shadows in the stroller.',
             completed: false,
             dateAchieved: '',
-            memory: ''
+            memory: '',
+            photoDataUrl: ''
           },
           {
             id: 'm-20',
@@ -2514,34 +2538,35 @@
             description: 'Uses upper body momentum to tip from tummy onto back.',
             completed: false,
             dateAchieved: '',
-            memory: ''
+            memory: '',
+            photoDataUrl: ''
           }
         ];
 
+        // Agastya's real recorded weight points
         const defaultWeightHistory = [
-          { label: 'Birth (Day 0)', kg: 3.30 },
-          { label: 'Day 4 (Discharge)', kg: 3.08 },
-          { label: 'Day 10 Check', kg: 3.28 },
-          { label: 'Day 14 Check', kg: 3.42 },
-          { label: 'Day 21 (Current)', kg: 3.65 }
+          { label: 'Birth (19 Oct)', kg: 2.54 },
+          { label: 'Today (3 Nov)', kg: 2.70 }
         ];
 
         return {
           profile: {
-            name: 'Baby Aarav',
+            name: 'Agastya',
             dob: birthDateStr,
-            birthTime: '08:30',
+            birthTime: birthTimeStr,
             dueDate: dueDateStr,
-            birthWeightKg: 3.30,
-            currentWeightKg: 3.65,
-            currentLengthCm: 51.5,
-            avatarDataUrl: createDefaultBabyFaceSvg()
+            birthWeightKg: 2.54,
+            birthLengthCm: 50.0,
+            currentWeightKg: 2.70,
+            currentLengthCm: 51.0,
+            avatarDataUrl: createDefaultBabyFaceSvg(),
+            updatedAt: Date.now()
           },
           activeParent: 'Dad',
-          handoverNote: 'Baby burped twice after morning feed and is sleeping peacefully in the bassinet ❤️',
+          handoverNote: '',
           cloudSync: {
             webhookUrl: '',
-            passkey: generateRandomPasskey(),
+            passkey: 'ls-family-secret-key',
             autoSync: true,
             e2ee: false,
             lastSyncedAt: ''
@@ -2556,12 +2581,12 @@
           logs: defaultLogs,
           milestones: defaultMilestones,
           weightHistory: defaultWeightHistory,
-          calendarEvents: buildDefaultCalendarEvents(birthDateStr)
+          calendarEvents: buildDefaultCalendarEvents(birthDateStr, birthTimeStr)
         };
       }
 
       // IndexedDB + LocalStorage High-Capacity Persistence Engine
-      const IDB_NAME = 'LittleStepsNewbornDB';
+      const IDB_NAME = 'LittleStepsAgastyaProdDB';
       const IDB_STORE = 'trackerStateStore';
       let state = createDefaultState();
       try {
@@ -2569,7 +2594,7 @@
         if (saved) {
           const parsed = JSON.parse(saved);
           if (parsed && parsed.logs && parsed.milestones && parsed.profile) {
-            state = parsed;
+            state = sanitizeOutLegacyDemoData(parsed);
             if (!state.profile.avatarDataUrl) state.profile.avatarDataUrl = createDefaultBabyFaceSvg();
             if (!state.profile.birthTime) state.profile.birthTime = '08:30';
             if (!state.profile.dueDate) {
@@ -2611,7 +2636,7 @@
           const getReq = store.get('main');
           getReq.onsuccess = function () {
             if (getReq.result && getReq.result.logs && getReq.result.profile) {
-              state = getReq.result;
+              state = sanitizeOutLegacyDemoData(getReq.result);
               if (!state.profile.avatarDataUrl) state.profile.avatarDataUrl = createDefaultBabyFaceSvg();
               if (!state.profile.birthTime) state.profile.birthTime = '08:30';
               if (!state.profile.dueDate) {
@@ -2659,7 +2684,7 @@
         }, 1200);
       }
 
-      async function syncToGoogleCloud(silent = false) {
+      async function syncToGoogleCloud(silent = false, forceOverwrite = false) {
         if (!state.cloudSync || !state.cloudSync.webhookUrl) {
           if (!silent) showToast('Paste your Google Apps Script URL first in Cloud Settings', 'bg-amber-500');
           return;
@@ -2680,6 +2705,7 @@
 
         const payload = {
           passkey,
+          forceOverwrite: Boolean(forceOverwrite),
           isEncrypted: useE2ee,
           syncedAt: getNow().toISOString(),
           profile: useE2ee ? { name: 'Encrypted (AES-256-GCM)' } : state.profile,
@@ -2702,15 +2728,15 @@
         }).then(res => res.json()).then(async data => {
           isSyncInFlight = false;
           if (data && data.error === 'UNAUTHORIZED') {
-            if (!silent) showToast('Cloud Sync Passkey mismatch! Check Secret Passkey.', 'bg-rose-500');
+            if (!silent) showToast('Passkey mismatch! Set Secret Passkey to match var SECRET_PASSKEY in your Google Script (e.g. ls-family-secret-key).', 'bg-rose-500');
             return;
           }
-          if (data && data.previousCipher) {
+          if (!forceOverwrite && data && data.previousCipher) {
             try {
               const prevObj = await decryptStateWithAesGcm(data.previousCipher, passkey);
               if (prevObj) mergeRemotePartnerState(prevObj);
             } catch (e) {}
-          } else if (data && data.mergedState) {
+          } else if (!forceOverwrite && data && data.mergedState) {
             mergeRemotePartnerState(data.mergedState);
           }
           state.cloudSync.lastSyncedAt = getNow().toISOString();
@@ -2738,6 +2764,7 @@
       // Conflict-Free Merge of Remote Spouse State into Local State (with Tombstone Deletion & Timestamp Wins)
       function mergeRemotePartnerState(remote) {
         if (!remote || !remote.logs) return false;
+        remote = sanitizeOutLegacyDemoData(remote);
         const deletedSet = new Set([...(state.deletedIds || []), ...(remote.deletedIds || [])]);
         state.deletedIds = Array.from(deletedSet).slice(-500);
 
@@ -3506,8 +3533,9 @@
         const actualExpectedKg = Number((p.birthWeightKg + Math.max(0, m.diffDays - 5) * 0.026).toFixed(2));
         const correctedExpectedKg = Number((p.birthWeightKg + Math.max(0, Math.max(0, m.correctedDays) - 5) * 0.026).toFixed(2));
 
-        const actualExpectedCm = Number((49.8 + (m.diffDays / 30) * 3.5).toFixed(1));
-        const correctedExpectedCm = Number((49.8 + (Math.max(0, m.correctedDays) / 30) * 3.5).toFixed(1));
+        const baseLen = Number(p.birthLengthCm) || 50.0;
+        const actualExpectedCm = Number((baseLen + (m.diffDays / 30) * 3.5).toFixed(1));
+        const correctedExpectedCm = Number((baseLen + (Math.max(0, m.correctedDays) / 30) * 3.5).toFixed(1));
 
         const wtDiffCorr = p.currentWeightKg - correctedExpectedKg;
         const wtStatus = wtDiffCorr >= -0.15
@@ -4583,11 +4611,10 @@
         });
 
         document.getElementById('recalcCalendarDatesBtn').addEventListener('click', () => {
-          const customEvents = (state.calendarEvents || []).filter(e => e.id.startsWith('cal-custom-'));
-          state.calendarEvents = [...buildDefaultCalendarEvents(state.profile.dob), ...customEvents];
+          state.calendarEvents = reorientCalendarEventsToBirthDate(state.calendarEvents, state.profile.dob, state.profile.birthTime);
           saveState();
           renderAll();
-          showToast('Synced ceremonies, monthly birthdays & vaccinations with birth date! 📅', 'bg-rose-500');
+          showToast('Reoriented all ceremonies, monthly birthdays & vaccinations to birth date & time! 📅', 'bg-rose-500');
         });
 
         document.getElementById('enableCalNotificationsBtn').addEventListener('click', () => {
@@ -4830,6 +4857,7 @@
           document.getElementById('profBirthTimeInput').value = state.profile.birthTime || '08:30';
           document.getElementById('profDueDateInput').value = state.profile.dueDate || state.profile.dob;
           document.getElementById('profBirthWeight').value = state.profile.birthWeightKg;
+          document.getElementById('profBirthLength').value = state.profile.birthLengthCm || 50.0;
           document.getElementById('profCurrWeight').value = state.profile.currentWeightKg;
           document.getElementById('profCurrLength').value = state.profile.currentLengthCm;
           pendingBabyFacePhoto = state.profile.avatarDataUrl || createDefaultBabyFaceSvg();
@@ -4877,17 +4905,27 @@
           state.profile.dob = document.getElementById('profDobInput').value;
           state.profile.birthTime = document.getElementById('profBirthTimeInput').value || '08:30';
           state.profile.dueDate = document.getElementById('profDueDateInput').value || state.profile.dob;
-          state.profile.birthWeightKg = parseFloat(document.getElementById('profBirthWeight').value) || 3.3;
-          state.profile.currentWeightKg = parseFloat(document.getElementById('profCurrWeight').value) || 3.65;
-          state.profile.currentLengthCm = parseFloat(document.getElementById('profCurrLength').value) || 51.5;
+          state.profile.birthWeightKg = parseFloat(document.getElementById('profBirthWeight').value) || 2.54;
+          state.profile.birthLengthCm = parseFloat(document.getElementById('profBirthLength').value) || 50.0;
+          state.profile.currentWeightKg = parseFloat(document.getElementById('profCurrWeight').value) || 2.70;
+          state.profile.currentLengthCm = parseFloat(document.getElementById('profCurrLength').value) || 51.0;
           if (pendingBabyFacePhoto) {
             state.profile.avatarDataUrl = pendingBabyFacePhoto;
           }
           state.profile.updatedAt = Date.now();
+          // Automatically reorient Baby Calendar to the updated Birth Date & Time
+          state.calendarEvents = reorientCalendarEventsToBirthDate(state.calendarEvents, state.profile.dob, state.profile.birthTime);
+          // Ensure Birth and Current weights are reflected in Weight Chart
+          const birthFormatted = new Date(state.profile.dob + 'T00:00:00').toLocaleDateString([], { day: 'numeric', month: 'short' });
+          const todayFormatted = getNow().toLocaleDateString([], { day: 'numeric', month: 'short' });
+          state.weightHistory = [
+            { label: `Birth (${birthFormatted})`, kg: state.profile.birthWeightKg },
+            { label: `Current (${todayFormatted})`, kg: state.profile.currentWeightKg }
+          ];
           saveState();
           renderAll();
           closeProf();
-          showToast('Baby profile, due date & maturity sheet updated!');
+          showToast('Profile saved & Calendar reoriented to birth date/time! 📅');
         });
 
         // Dashboard Quick Navigation & 1-Tap Instant Log Buttons
@@ -5303,15 +5341,16 @@
             "    }",
             "    var merged = incoming;",
             "    try {",
-            "      var existing = (prevRaw && prevRaw.indexOf('ENC_AES256GCM:') !== 0) ? JSON.parse(prevRaw) : null;",
+            "      var existing = (!data.forceOverwrite && prevRaw && prevRaw.indexOf('ENC_AES256GCM:') !== 0) ? JSON.parse(prevRaw) : null;",
             "      if (existing) {",
             "        var deletedMap = {};",
             "        (incoming.deletedIds || []).concat(existing.deletedIds || []).forEach(function(did) { if (did) deletedMap[did] = true; });",
             "        merged.deletedIds = Object.keys(deletedMap);",
             "        var seenIds = {};",
             "        var combinedLogs = [];",
+            "        var isDemoId = function(id) { return /^(log-([1-9]|1[0-2])|hist-[fds]-\\d+-\\d+)$/.test(String(id || '')); };",
             "        (incoming.logs || []).concat(existing.logs || []).forEach(function(l) {",
-            "          if (l && l.id && !deletedMap[l.id] && !seenIds[l.id]) { seenIds[l.id] = true; combinedLogs.push(l); }",
+            "          if (l && l.id && !isDemoId(l.id) && !deletedMap[l.id] && !seenIds[l.id]) { seenIds[l.id] = true; combinedLogs.push(l); }",
             "        });",
             "        combinedLogs.sort(function(a, b) { return new Date(b.timestamp) - new Date(a.timestamp); });",
             "        merged.logs = combinedLogs;",
@@ -5384,11 +5423,19 @@
             try {
               const parsed = JSON.parse(evt.target.result);
               if (parsed && parsed.logs && parsed.milestones && parsed.profile) {
+                const prevCloud = state.cloudSync;
+                const prevProfile = state.profile;
                 state = parsed;
+                if (!state.cloudSync || !state.cloudSync.webhookUrl) state.cloudSync = prevCloud;
+                if (state.profile.name === 'Our Baby' && prevProfile && prevProfile.name && prevProfile.name !== 'Baby Aarav') {
+                  state.profile = prevProfile;
+                }
                 if (!state.profile.avatarDataUrl) state.profile.avatarDataUrl = createDefaultBabyFaceSvg();
+                if (!state.calendarEvents || !state.calendarEvents.length) state.calendarEvents = buildDefaultCalendarEvents(state.profile.dob);
                 saveState(false);
+                if (state.cloudSync && state.cloudSync.webhookUrl) syncToGoogleCloud(false, true);
                 renderAll();
-                showToast('Restored full backup (logs, milestones & photos)! 🎉', 'bg-emerald-500');
+                showToast('Backup applied & synced across devices! 🎉', 'bg-emerald-500');
               } else {
                 showToast('Invalid backup file format', 'bg-rose-500');
               }
@@ -5456,6 +5503,48 @@
           a.remove();
           URL.revokeObjectURL(url);
           showToast('Exported CSV log!');
+        });
+
+        // Clear All Demo Data (Start Fresh while keeping Baby Profile & Cloud Sync settings)
+        const closeClearModal = () => document.getElementById('clearDemoConfirmModal').classList.add('hidden');
+        document.getElementById('clearAllDemoDataBtn').addEventListener('click', () => {
+          document.getElementById('clearDemoConfirmModal').classList.remove('hidden');
+        });
+        document.getElementById('closeClearDemoModalBtn').addEventListener('click', closeClearModal);
+        document.getElementById('cancelClearDemoBtn').addEventListener('click', closeClearModal);
+
+        document.getElementById('confirmClearDemoBtn').addEventListener('click', () => {
+          const allOldLogIds = (state.logs || []).map(l => l.id);
+          state.deletedIds = Array.from(new Set([...(state.deletedIds || []), ...allOldLogIds]));
+          state.logs = [];
+          const nowTs = Date.now();
+          state.milestones = (state.milestones || [])
+            .filter(m => !String(m.id).startsWith('m-custom-'))
+            .map(m => ({
+              ...m,
+              completed: false,
+              dateAchieved: '',
+              memory: '',
+              photoDataUrl: '',
+              updatedAt: nowTs
+            }));
+          state.weightHistory = [
+            { label: 'Birth (Day 0)', kg: state.profile.birthWeightKg || 3.30 },
+            { label: 'Current', kg: state.profile.currentWeightKg || 3.30 }
+          ];
+          state.handoverNote = '';
+          state.calendarEvents = buildDefaultCalendarEvents(state.profile.dob).map(ev => ({
+            ...ev,
+            completed: false,
+            updatedAt: nowTs
+          }));
+          saveState(false);
+          if (state.cloudSync && state.cloudSync.webhookUrl) {
+            syncToGoogleCloud(false, true);
+          }
+          renderAll();
+          closeClearModal();
+          showToast('All demo data cleared! Ready for your baby’s real logs 🌟', 'bg-emerald-500');
         });
 
         // Restore Demo Data
