@@ -106,8 +106,8 @@
 </head>
 <body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 min-h-screen transition-colors duration-200">
 
-  <!-- Top Toast Notification -->
-  <div id="toastContainer" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+  <!-- Top Toast Notification (z-[100] ensures toasts always appear on top of open modals) -->
+  <div id="toastContainer" class="fixed bottom-5 right-5 z-[100] flex flex-col gap-2 pointer-events-none"></div>
 
   <!-- Header (with iPadOS Status Bar Safe-Area Clearance) -->
   <header class="ios-safe-header sticky top-0 z-30 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800">
@@ -129,7 +129,7 @@
               </span>
               <button id="openVersionModalBtn" type="button" class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-mono font-bold bg-indigo-100 hover:bg-indigo-200 text-indigo-800 dark:bg-indigo-950/90 dark:hover:bg-indigo-900 dark:text-indigo-300 border border-indigo-200/80 dark:border-indigo-800 transition shadow-sm" title="View App Version, Release Notes & Check for Updates">
                 <span id="versionStatusDot" class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                <span id="headerVersionBadgeText">v10.0</span>
+                <span id="headerVersionBadgeText">v10.1</span>
               </button>
               <button id="editProfileBtn" type="button" class="text-xs text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition" title="Edit Baby Profile & Face Photo">
                 <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1667,11 +1667,36 @@
               </label>
             </div>
             <div class="flex flex-wrap items-center gap-1.5">
-              <button id="copySpousePairingCodeBtn" type="button" class="px-2.5 py-1 rounded-lg bg-rose-100 hover:bg-rose-200 dark:bg-rose-950 text-rose-700 dark:text-rose-300 font-bold text-[11px] transition">
+              <button id="copySpousePairingCodeBtn" type="button" class="px-2.5 py-1.5 rounded-lg bg-rose-100 hover:bg-rose-200 dark:bg-rose-950 text-rose-700 dark:text-rose-300 font-bold text-[11px] transition">
                 📋 Copy Pairing Code (2nd / 3rd Phone)
               </button>
-              <button id="shareMagicPairingLinkBtn" type="button" class="px-2.5 py-1 rounded-lg bg-indigo-100 hover:bg-indigo-200 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 font-bold text-[11px] transition" title="Send a 1-Tap Auto-Pairing Link via WhatsApp, AirDrop, or SMS">
+              <button id="shareMagicPairingLinkBtn" type="button" class="px-2.5 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-[11px] shadow-sm transition" title="Generate & Share a 1-Tap Auto-Pairing Link via WhatsApp, SMS, or Copy">
                 📲 Share 1-Tap Link
+              </button>
+            </div>
+          </div>
+
+          <!-- Instant Inline Share & Copy Drawer (Opens immediately when clicking Share 1-Tap Link or Copy Pairing Code) -->
+          <div id="pairingShareDrawer" class="hidden p-3 rounded-xl bg-indigo-50/90 dark:bg-slate-900 border border-indigo-200 dark:border-indigo-800/80 space-y-2">
+            <div class="flex items-center justify-between gap-2">
+              <span id="pairingShareDrawerStatus" class="text-[11px] font-bold text-emerald-700 dark:text-emerald-400">✅ Copied to Clipboard! Send to 2nd / 3rd phone:</span>
+              <button id="closePairingShareDrawerBtn" type="button" class="text-[11px] text-slate-400 hover:text-slate-600">✕</button>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <input id="generatedMagicLinkOutput" type="text" readonly class="flex-1 px-2.5 py-1.5 rounded-lg bg-white dark:bg-slate-800 border border-indigo-200 dark:border-slate-700 text-[11px] font-mono text-slate-800 dark:text-slate-100 select-all" />
+              <button id="copyGeneratedMagicLinkBtn" type="button" class="px-2.5 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-white dark:bg-white dark:text-slate-900 text-[11px] font-bold whitespace-nowrap transition">
+                📋 Copy Again
+              </button>
+            </div>
+            <div class="flex flex-wrap items-center gap-2 pt-0.5">
+              <a id="whatsappShareMagicLinkBtn" href="#" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-bold shadow-sm transition">
+                💬 Send via WhatsApp
+              </a>
+              <a id="smsShareMagicLinkBtn" href="#" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-sky-600 hover:bg-sky-700 text-white text-[11px] font-bold shadow-sm transition">
+                ✉️ Send via SMS / iMessage
+              </a>
+              <button id="nativeOsShareMagicLinkBtn" type="button" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-indigo-100 hover:bg-indigo-200 dark:bg-indigo-950 text-indigo-800 dark:text-indigo-200 text-[11px] font-bold transition">
+                📱 More Share Options...
               </button>
             </div>
           </div>
@@ -1837,7 +1862,7 @@
       <div class="flex items-start justify-between gap-3">
         <div>
           <div class="flex items-center gap-2">
-            <span class="px-2.5 py-0.5 rounded-full text-xs font-mono font-extrabold bg-indigo-600 text-white" id="modalCurrentVersionPill">v10.0</span>
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-mono font-extrabold bg-indigo-600 text-white" id="modalCurrentVersionPill">v10.1</span>
             <span id="modalUpdateStatusBadge" class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
               ✓ Latest Version Installed
             </span>
@@ -1997,11 +2022,23 @@
       // - Every New Feature increments a Full Generation (+1.0)
       // - Every Bug Squashed increments a Sub-Generation (+0.1)
       // ============================================================================
-      const APP_VERSION = '10.0';
+      const APP_VERSION = '10.1';
       const APP_RELEASE_DATE = '5 Nov 2026 (IST)';
       const VERSION_STORAGE_KEY = 'littlesteps_last_seen_version';
       const PERMANENT_CLOUD_VAULT_KEY = 'LITTLESTEPS_PERMANENT_CLOUD_VAULT_V1';
       const VERSION_CHANGELOG = [
+        {
+          version: '10.1',
+          type: 'bugfix',
+          badge: '🐛 BUG SQUASHED (+0.1)',
+          date: '5 Nov 2026 (IST)',
+          title: 'Fixed "Share 1-Tap Link" Action & Modal Toast Visibility',
+          changes: [
+            'Fixed bug where toast notifications (z-50) rendered behind open modals (#cloudSyncModal) and were invisible when clicking buttons inside a modal (upgraded toastContainer to z-[100]).',
+            'Rebuilt "📲 Share 1-Tap Link" & "📋 Copy Pairing Code" to copy synchronously, turn the button green ("✅ Link Ready!"), and open an inline Share Drawer with direct "💬 Send via WhatsApp", "✉️ Send via SMS / iMessage", and selectable link output.',
+            'Fixed fallbackCopy() to work reliably inside open modals and display custom confirmation messages.'
+          ]
+        },
         {
           version: '10.0',
           type: 'feature',
@@ -6236,52 +6273,120 @@
 
         document.getElementById('openPartnerSetupBtn').addEventListener('click', openCloudModal);
 
-        document.getElementById('copySpousePairingCodeBtn').addEventListener('click', () => {
-          const url = document.getElementById('gasWebhookUrlInput').value.trim() || (state.cloudSync && state.cloudSync.webhookUrl) || '';
-          const key = document.getElementById('syncPasskeyInput').value.trim() || (state.cloudSync && state.cloudSync.passkey) || 'ls-family-secret-key';
-          if (!url) {
-            showToast('Paste your Google Apps Script URL in Box 1 first to generate a pairing code', 'bg-amber-500');
-            return;
+        function buildPairingDataAndOpenDrawer(mode = 'link') {
+          const urlInput = document.getElementById('gasWebhookUrlInput');
+          const keyInput = document.getElementById('syncPasskeyInput');
+          const url = (urlInput && urlInput.value.trim()) || (state.cloudSync && state.cloudSync.webhookUrl) || '';
+          const key = (keyInput && keyInput.value.trim()) || (state.cloudSync && state.cloudSync.passkey) || 'ls-family-secret-key';
+          const drawer = document.getElementById('pairingShareDrawer');
+          const statusEl = document.getElementById('pairingShareDrawerStatus');
+          const outInput = document.getElementById('generatedMagicLinkOutput');
+
+          if (!url || !url.startsWith('https://')) {
+            if (urlInput) {
+              urlInput.focus();
+              urlInput.classList.add('ring-2', 'ring-rose-500');
+              setTimeout(() => urlInput.classList.remove('ring-2', 'ring-rose-500'), 2500);
+            }
+            showToast('⚠️ Paste your https://script.google.com/.../exec URL in Box 1 first!', 'bg-rose-600');
+            return null;
           }
+
+          // Save URL & key immediately so user doesn't even have to click Save first
+          if (!state.cloudSync) state.cloudSync = { webhookUrl: url, passkey: key, autoSync: true, e2ee: false, lastSyncedAt: '' };
+          state.cloudSync.webhookUrl = url;
+          state.cloudSync.passkey = key;
+          saveCloudCredentialsToPermanentVault(state.cloudSync, state.activeParent);
+
           const bundle = JSON.stringify({ u: url, k: key });
           const code = 'LS-PAIR:' + btoa(unescape(encodeURIComponent(bundle)));
-          if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(code).then(() => showToast('Copied Multi-Device Pairing Code! Paste on 2nd/3rd phone 📋')).catch(() => fallbackCopy(code));
-          } else {
-            fallbackCopy(code);
+          const baseOriginPath = (window.location.origin && window.location.origin !== 'null')
+            ? (window.location.origin + window.location.pathname)
+            : window.location.href.split('#')[0].split('?')[0];
+          const magicUrl = baseOriginPath + '#pair=' + encodeURIComponent(code);
+          const textToCopy = (mode === 'code') ? code : magicUrl;
+
+          // Populate and reveal inline drawer immediately
+          if (drawer && outInput) {
+            outInput.value = textToCopy;
+            drawer.classList.remove('hidden');
+            const shareText = `Tap this 1-Tap Magic Link to connect your phone to Agastya’s LittleSteps Tracker:\n${magicUrl}\n\n(Or paste Pairing Code: ${code})`;
+            const waBtn = document.getElementById('whatsappShareMagicLinkBtn');
+            if (waBtn) waBtn.href = 'https://wa.me/?text=' + encodeURIComponent(shareText);
+            const smsBtn = document.getElementById('smsShareMagicLinkBtn');
+            if (smsBtn) smsBtn.href = 'sms:?&body=' + encodeURIComponent(shareText);
+          }
+
+          // Copy synchronously + via Clipboard API
+          copyTextReliably(textToCopy, mode === 'code'
+            ? '✅ Copied Pairing Code! Send via WhatsApp or paste on 3rd phone 📋'
+            : '✅ 1-Tap Magic Link Ready & Copied! Tap WhatsApp/SMS below or paste anywhere 📲'
+          );
+
+          if (statusEl) {
+            statusEl.textContent = mode === 'code'
+              ? '✅ Pairing Code Copied! Send via WhatsApp/SMS or paste on 2nd/3rd phone:'
+              : '✅ 1-Tap Magic Link Copied! Tap WhatsApp / SMS below or paste on 2nd/3rd phone:';
+          }
+
+          return { code, magicUrl };
+        }
+
+        document.getElementById('copySpousePairingCodeBtn').addEventListener('click', () => {
+          const btn = document.getElementById('copySpousePairingCodeBtn');
+          const res = buildPairingDataAndOpenDrawer('code');
+          if (res && btn) {
+            const orig = btn.innerHTML;
+            btn.innerHTML = '✅ Pairing Code Copied!';
+            setTimeout(() => { btn.innerHTML = orig; }, 2800);
           }
         });
 
         const shareMagicLinkBtn = document.getElementById('shareMagicPairingLinkBtn');
         if (shareMagicLinkBtn) {
-          shareMagicLinkBtn.addEventListener('click', async () => {
-            const url = document.getElementById('gasWebhookUrlInput').value.trim() || (state.cloudSync && state.cloudSync.webhookUrl) || '';
-            const key = document.getElementById('syncPasskeyInput').value.trim() || (state.cloudSync && state.cloudSync.passkey) || 'ls-family-secret-key';
-            if (!url) {
-              showToast('Paste your Google Apps Script URL in Box 1 first', 'bg-amber-500');
-              return;
+          shareMagicLinkBtn.addEventListener('click', () => {
+            const res = buildPairingDataAndOpenDrawer('link');
+            if (res) {
+              const orig = shareMagicLinkBtn.innerHTML;
+              shareMagicLinkBtn.innerHTML = '✅ 1-Tap Link Ready!';
+              setTimeout(() => { shareMagicLinkBtn.innerHTML = orig; }, 2800);
             }
-            const bundle = JSON.stringify({ u: url, k: key });
-            const code = 'LS-PAIR:' + btoa(unescape(encodeURIComponent(bundle)));
-            const magicUrl = window.location.origin + window.location.pathname + '#pair=' + encodeURIComponent(code);
+          });
+        }
+
+        const closeDrawerBtn = document.getElementById('closePairingShareDrawerBtn');
+        if (closeDrawerBtn) {
+          closeDrawerBtn.addEventListener('click', () => {
+            document.getElementById('pairingShareDrawer').classList.add('hidden');
+          });
+        }
+
+        const copyGenBtn = document.getElementById('copyGeneratedMagicLinkBtn');
+        if (copyGenBtn) {
+          copyGenBtn.addEventListener('click', () => {
+            const outInput = document.getElementById('generatedMagicLinkOutput');
+            if (outInput && outInput.value) {
+              outInput.select();
+              copyTextReliably(outInput.value, '✅ Copied to clipboard!');
+            }
+          });
+        }
+
+        const nativeOsShareBtn = document.getElementById('nativeOsShareMagicLinkBtn');
+        if (nativeOsShareBtn) {
+          nativeOsShareBtn.addEventListener('click', async () => {
+            const res = buildPairingDataAndOpenDrawer('link');
+            if (!res) return;
             if (navigator.share) {
               try {
                 await navigator.share({
                   title: 'LittleSteps — Connect Phone to Agastya Tracker',
-                  text: 'Tap this link to automatically connect your phone to Agastya’s live tracker:',
-                  url: magicUrl
+                  text: `Tap this link to connect your phone to Agastya’s live tracker: ${res.magicUrl}`
                 });
-                showToast('Shared 1-Tap Magic Pairing Link! 📲', 'bg-indigo-500');
                 return;
-              } catch (err) {
-                if (err && err.name === 'AbortError') return;
-              }
+              } catch (e) {}
             }
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-              navigator.clipboard.writeText(magicUrl).then(() => showToast('Copied 1-Tap Magic Pairing URL! Send via WhatsApp/SMS 📲', 'bg-indigo-500')).catch(() => fallbackCopy(magicUrl));
-            } else {
-              fallbackCopy(magicUrl);
-            }
+            showToast('Link is already copied to your clipboard — paste it into any app!', 'bg-indigo-500');
           });
         }
 
@@ -6660,18 +6765,37 @@
         });
       }
 
-      function fallbackCopy(text) {
+      function fallbackCopy(text, successMsg = 'Copied to clipboard! 📋') {
         const ta = document.createElement('textarea');
         ta.value = text;
-        document.body.appendChild(ta);
+        ta.setAttribute('readonly', '');
+        ta.style.position = 'fixed';
+        ta.style.top = '0';
+        ta.style.left = '0';
+        ta.style.opacity = '0';
+        const activeModal = document.querySelector('#cloudSyncModal:not(.hidden), #pediatricianModal:not(.hidden)');
+        const parentEl = activeModal || document.body;
+        parentEl.appendChild(ta);
+        ta.focus();
         ta.select();
+        ta.setSelectionRange(0, text.length);
         try {
           document.execCommand('copy');
-          showToast('Doctor summary copied!');
+          showToast(successMsg, 'bg-emerald-500');
         } catch (err) {
-          showToast('Could not copy automatically');
+          showToast('Selected text — tap Copy!', 'bg-amber-500');
         }
         ta.remove();
+      }
+
+      function copyTextReliably(text, successMsg = 'Copied to clipboard! 📋') {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text)
+            .then(() => showToast(successMsg, 'bg-emerald-500'))
+            .catch(() => fallbackCopy(text, successMsg));
+        } else {
+          fallbackCopy(text, successMsg);
+        }
       }
 
       function updateMilestonePhotoPreviewUI() {
