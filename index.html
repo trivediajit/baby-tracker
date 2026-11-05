@@ -129,7 +129,7 @@
               </span>
               <button id="openVersionModalBtn" type="button" class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-mono font-bold bg-indigo-100 hover:bg-indigo-200 text-indigo-800 dark:bg-indigo-950/90 dark:hover:bg-indigo-900 dark:text-indigo-300 border border-indigo-200/80 dark:border-indigo-800 transition shadow-sm" title="View App Version, Release Notes & Check for Updates">
                 <span id="versionStatusDot" class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                <span id="headerVersionBadgeText">v11.0</span>
+                <span id="headerVersionBadgeText">v12.0</span>
               </button>
               <button id="editProfileBtn" type="button" class="text-xs text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition" title="Edit Baby Profile & Face Photo">
                 <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -353,7 +353,7 @@
               </div>
             </div>
             <p id="lastLoggedByParentText" class="text-[11px] text-indigo-100">
-              Last activity logged by <strong>👩 Mom</strong> • Shared note for next shift:
+              Shared shift handover note for Mom / Dad / Family:
             </p>
             <div class="flex items-center gap-1.5">
               <input id="handoverNoteInput" type="text" placeholder="Leave a quick shift note for Mom/Dad..." class="flex-1 px-2.5 py-1.5 rounded-lg bg-slate-900/80 border border-white/15 text-xs text-white placeholder-slate-400" />
@@ -428,20 +428,20 @@
             <!-- Next Feeding Prediction -->
             <div class="bg-white/10 rounded-xl p-3.5 border border-white/10">
               <p class="text-[11px] font-medium text-rose-200">🍼 Next Feed Window</p>
-              <p id="sweetSpotFeedTime" class="text-lg font-bold mt-1">In ~1h 15m</p>
+              <p id="sweetSpotFeedTime" class="text-lg font-bold mt-1">Log first feed</p>
               <p id="sweetSpotFeedSub" class="text-[11px] text-slate-300 mt-0.5">Every 2.5–3 hrs for newborn</p>
             </div>
             <!-- Next Nap SweetSpot -->
             <div class="bg-white/10 rounded-xl p-3.5 border border-white/10">
               <p class="text-[11px] font-medium text-sky-200">🌙 SweetSpot Next Nap</p>
-              <p id="sweetSpotNapTime" class="text-lg font-bold mt-1">Wake window active</p>
+              <p id="sweetSpotNapTime" class="text-lg font-bold mt-1">Log first sleep</p>
               <p id="sweetSpotNapSub" class="text-[11px] text-slate-300 mt-0.5">Target wake window: 45–75m</p>
             </div>
             <!-- Nursing Side Memory -->
             <div class="bg-white/10 rounded-xl p-3.5 border border-white/10">
               <p class="text-[11px] font-medium text-amber-200">🤱 Next Nursing Side</p>
-              <p id="nextNursingSideText" class="text-lg font-bold mt-1">Start on Right (R)</p>
-              <p id="nextNursingSideSub" class="text-[11px] text-slate-300 mt-0.5">Last started on Left side</p>
+              <p id="nextNursingSideText" class="text-lg font-bold mt-1">Left (L) or Right (R)</p>
+              <p id="nextNursingSideSub" class="text-[11px] text-slate-300 mt-0.5">Auto-tracks last nursing side</p>
             </div>
           </div>
 
@@ -897,7 +897,9 @@
                       <option value="Bath Time">🛁 Sponge / Tub Bath</option>
                       <option value="Pumping">🍶 Milk Pumping Session</option>
                       <option value="Weight Check">⚖️ Weight Check (kg / lbs)</option>
+                      <option value="Length Check">📏 Length / Height Check (cm / in)</option>
                       <option value="Temperature">🌡️ Temperature Check (°C / °F)</option>
+                      <option value="Medicine / Drops">💊 Medicine / Colic / Nasal Drops</option>
                     </select>
                   </div>
                   <div>
@@ -982,8 +984,8 @@
         <!-- Overall Progress Bar -->
         <div class="mt-4">
           <div class="flex justify-between text-xs font-semibold mb-1.5">
-            <span id="milestoneProgressLabel" class="text-slate-700 dark:text-slate-300">6 of 20 Milestones Recorded</span>
-            <span id="milestonePercentLabel" class="text-amber-600 dark:text-amber-400">30%</span>
+            <span id="milestoneProgressLabel" class="text-slate-700 dark:text-slate-300">0 of 20 Milestones Recorded</span>
+            <span id="milestonePercentLabel" class="text-amber-600 dark:text-amber-400">0%</span>
           </div>
           <div class="w-full h-2.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
             <div id="milestoneProgressBar" class="h-full bg-gradient-to-r from-amber-400 via-rose-400 to-indigo-500 rounded-full transition-all duration-500" style="width: 30%"></div>
@@ -1733,6 +1735,9 @@
           Your Google Sheet URL and Passkey are locked in a separate <strong>Permanent Credentials Vault</strong> that survives all GitHub version updates. You can also pull existing data from your Google Sheet or copy an auto-healing iPad bookmark link:
         </p>
         <div class="flex flex-wrap items-center gap-2">
+          <button id="testCloudConnectionBtn" type="button" class="px-3 py-1.5 rounded-lg bg-sky-600 hover:bg-sky-700 text-white text-[11px] font-bold transition">
+            🩺 Test Cloud Connection
+          </button>
           <button id="pullRestoreFromCloudBtn" type="button" class="px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-[11px] font-bold transition">
             📥 Pull &amp; Restore Data from Google Sheet First
           </button>
@@ -1865,7 +1870,7 @@
       <div class="flex items-start justify-between gap-3">
         <div>
           <div class="flex items-center gap-2">
-            <span class="px-2.5 py-0.5 rounded-full text-xs font-mono font-extrabold bg-indigo-600 text-white" id="modalCurrentVersionPill">v11.0</span>
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-mono font-extrabold bg-indigo-600 text-white" id="modalCurrentVersionPill">v12.0</span>
             <span id="modalUpdateStatusBadge" class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
               ✓ Latest Version Installed
             </span>
@@ -2025,13 +2030,50 @@
       // - Every New Feature increments a Full Generation (+1.0)
       // - Every Bug Squashed increments a Sub-Generation (+0.1)
       // ============================================================================
-      const APP_VERSION = '11.0';
+      const APP_VERSION = '12.0';
       const APP_RELEASE_DATE = '5 Nov 2026 (IST)';
       const VERSION_STORAGE_KEY = 'littlesteps_last_seen_version';
       const PERMANENT_CLOUD_VAULT_KEY = 'LITTLESTEPS_PERMANENT_CLOUD_VAULT_V1';
       const DEFAULT_BAKED_WEBHOOK_URL = '';
       const DEFAULT_BAKED_PASSKEY = 'ls-family-secret-key';
       const VERSION_CHANGELOG = [
+        {
+          version: '12.0',
+          type: 'feature',
+          badge: '✨ NEW FEATURE (+1.0)',
+          date: '5 Nov 2026 (IST)',
+          title: 'Full SIT/UAT Hardening: Cloud Connection Diagnostic, Length & Medicine Care Logger & 3 AM Debounce Guard',
+          changes: [
+            'Added "🩺 Test Cloud Connection" diagnostic button in Cloud Settings that tests round-trip latency, verifies your Passkey, and reports exact log/photo counts stored in your Google Sheet.',
+            'Added "📏 Length / Height Check (cm / in)" (auto-updates profile length) and "💊 Medicine / Colic / Nasal Drops" to Daily Care.',
+            'Added 400ms double-tap debounce protection on 1-Tap Quick Log buttons so sleepy 3 AM taps never create duplicate entries.'
+          ]
+        },
+        {
+          version: '11.2',
+          type: 'bugfix',
+          badge: '🐛 BUG SQUASHED (+0.1)',
+          date: '5 Nov 2026 (IST)',
+          title: 'SIT & UAT Edge-Case Repairs (Weight History Preservation, Clean Pre-Linked HTML Export, Server Merge & Offline Charts)',
+          changes: [
+            'Fixed bug where saving Edit Profile overwrote intermediate weightHistory points with a 2-item array—all historical weight checks are now preserved.',
+            'Fixed "⚡ Download Pre-Linked index.html" so it exports a clean HTML document with all modals closed and runtime style bloat removed.',
+            'Fixed server-side doPost merge & client first-connect flow so a newly connected 3rd/4th phone pulls existing profile photos, weight history, and shift notes first without overwriting them.',
+            'Added empty-state reset handlers for SweetSpot predictors, IST hour calculation on the 24-hour rhythm bar, +05:30 offset on dueMidnight, and offline Chart.js fallback guards.'
+          ]
+        },
+        {
+          version: '11.1',
+          type: 'bugfix',
+          badge: '🐛 BUG SQUASHED (+0.1)',
+          date: '5 Nov 2026 (IST)',
+          title: 'Fixed 3rd Phone Staying Yellow on ?pair=...#pair=... Links & Multi-Account Google Fetch',
+          changes: [
+            'Fixed regex bug in decodeAnyPairingInput where URLs containing both ?pair= and #pair= glued both tokens together ([^&\s]+ instead of [^&#\s]+), which caused a brand-new 3rd phone to fail decoding and stay yellow.',
+            'Added credentials: "omit" to Google Apps Script fetch() requests so phones signed into multiple Gmail accounts never hit Google 302 redirect cookie conflicts.',
+            'Synced knownSyncedLogIds on initial pull so newly connected phones immediately turn Emerald Green (Synced ✓) instead of staying yellow.'
+          ]
+        },
         {
           version: '11.0',
           type: 'feature',
@@ -3227,6 +3269,7 @@
           },
           activeParent: 'Dad',
           handoverNote: '',
+          handoverUpdatedAt: 0,
           cloudSync: {
             webhookUrl: '',
             passkey: 'ls-family-secret-key',
@@ -3501,6 +3544,11 @@
           return;
         }
         if (isSyncInFlight && silent) return;
+        // Safety guard for brand-new 3rd/4th phone: if local logs are empty and this device has never synced yet, pull & merge from Google Sheet first!
+        if (!forceOverwrite && (!state.logs || state.logs.length === 0) && !state.cloudSync.lastSyncedAt && (!state.unsyncedLogIds || state.unsyncedLogIds.length === 0)) {
+          pullFromCommonMemory(silent);
+          return;
+        }
         ensureOfflineQueueTracked();
         const queuedIdsSnapshot = [...(state.unsyncedLogIds || [])];
         const pendingBefore = getPendingSyncCount();
@@ -3562,6 +3610,8 @@
 
         fetch(url, {
           method: 'POST',
+          credentials: 'omit',
+          redirect: 'follow',
           headers: { 'Content-Type': 'text/plain;charset=utf-8' },
           body: JSON.stringify(payload)
         }).then(res => res.json()).then(async data => {
@@ -3718,8 +3768,11 @@
           }
         }
 
-        if (remote.handoverNote && remote.handoverNote !== state.handoverNote) {
-          state.handoverNote = remote.handoverNote;
+        if (typeof remote.handoverNote === 'string') {
+          if ((remote.handoverUpdatedAt || 0) > (state.handoverUpdatedAt || 0) || (!state.handoverNote && remote.handoverNote)) {
+            state.handoverNote = remote.handoverNote;
+            state.handoverUpdatedAt = remote.handoverUpdatedAt || Date.now();
+          }
         }
 
         if (remote.activeTimers && typeof remote.activeTimers === 'object') {
@@ -3747,7 +3800,11 @@
         if (!url.startsWith('https://')) return;
         const rawPasskey = (state.cloudSync && state.cloudSync.passkey) || '';
         const passkey = encodeURIComponent(rawPasskey);
-        fetch(url + (url.includes('?') ? '&' : '?') + 'action=pull&key=' + passkey + '&t=' + Date.now())
+        fetch(url + (url.includes('?') ? '&' : '?') + 'action=pull&key=' + passkey + '&t=' + Date.now(), {
+          method: 'GET',
+          credentials: 'omit',
+          redirect: 'follow'
+        })
           .then(res => res.text())
           .then(async rawText => {
             let remoteState = null;
@@ -3774,17 +3831,23 @@
                 remoteState = (data && data.fullBackupJson) ? await decryptStateWithAesGcm(data.fullBackupJson, rawPasskey) : data;
               }
             }
+            if (!knownSyncedLogIds) {
+              knownSyncedLogIds = new Set((state.logs || []).map(l => l && l.id).filter(Boolean));
+            }
             const added = mergeRemotePartnerState(remoteState);
+            (state.logs || []).forEach(l => { if (l && l.id) knownSyncedLogIds.add(l.id); });
+            state.unsyncedLogIds = [];
             state.hasUnsyncedChanges = false;
             state.cloudSync.lastSyncedAt = getNow().toISOString();
             saveState(false);
             renderAll();
+            updateSyncButtonsUI();
             if (!silent) {
-              showToast(added > 0 ? `Pulled ${added} new entry(s) from spouse’s phone! 👩‍❤️‍👨` : 'Both phones are 100% in sync! ✓', 'bg-emerald-500');
+              showToast(added > 0 ? `Connected & pulled ${added} entry(s) from Google Sheet! 👩‍❤️‍👨✓` : 'Connected & 100% in sync with Google Sheet! ✓', 'bg-emerald-500');
             }
           })
           .catch(() => {
-            // Also push local changes so shared memory stays updated
+            // Fallback to POST (which also returns mergedState from doPost!)
             syncToGoogleCloud(silent);
           });
       }
@@ -4014,7 +4077,7 @@
 
         // Due Date & Pre/Post-Maturity calculation (Full Term = 280 days / 40w0d at Due Date)
         const dueDateStr = p.dueDate || p.dob;
-        const dueMidnight = new Date(`${dueDateStr}T00:00:00`);
+        const dueMidnight = new Date(`${dueDateStr}T00:00:00+05:30`);
         // offsetDays: positive if born BEFORE due date (early/pre-mature), negative if born AFTER due date (late/post-mature)
         const daysEarly = Math.round((dueMidnight - dobMidnight) / 86400000);
         const gestBirthTotalDays = 280 - daysEarly;
@@ -4140,10 +4203,13 @@
         }
         const latestLog = state.logs[0];
         if (latestLog) {
-          const who = latestLog.loggedBy || 'Mom/Dad';
+          const who = latestLog.loggedBy || 'Dad';
           const icon = who === 'Mom' ? '👩' : (who === 'Family' ? '👵' : '👨');
           document.getElementById('lastLoggedByParentText').innerHTML =
             `Last entry by <strong>${icon} ${who}</strong> (${formatTimeAgo(latestLog.timestamp)}) • Shared shift note:`;
+        } else {
+          document.getElementById('lastLoggedByParentText').innerHTML =
+            `No activity logged yet today • Shared shift handover note:`;
         }
 
         const lenStr = state.useImperial ? `${(p.currentLengthCm / 2.54).toFixed(1)} in` : `${p.currentLengthCm} cm`;
@@ -4260,6 +4326,9 @@
             document.getElementById('sweetSpotFeedTime').textContent = 'Due Now (Watch for hunger cues)';
             document.getElementById('sweetSpotFeedSub').textContent = `Last fed ${formatTimeAgo(lastFeed.timestamp)}`;
           }
+        } else {
+          document.getElementById('sweetSpotFeedTime').textContent = 'Log first feed';
+          document.getElementById('sweetSpotFeedSub').textContent = 'Predicts next 2.5–3 hr window automatically';
         }
 
         const lastBreast = sortedLogs.find(l => l.type === 'feeding' && l.method === 'breast');
@@ -4267,6 +4336,9 @@
           const nextSide = lastBreast.startSide === 'Left' ? 'Right (R)' : 'Left (L)';
           document.getElementById('nextNursingSideText').textContent = `Start on ${nextSide}`;
           document.getElementById('nextNursingSideSub').textContent = `Last nursed starting on ${lastBreast.startSide}`;
+        } else {
+          document.getElementById('nextNursingSideText').textContent = 'Left (L) or Right (R)';
+          document.getElementById('nextNursingSideSub').textContent = 'Remembers last side automatically';
         }
 
         if (lastSleep) {
@@ -4280,15 +4352,18 @@
             document.getElementById('sweetSpotNapTime').textContent = `Around ${formatClockTime(new Date(now.getTime() + 45 * 60000).toISOString())}`;
             document.getElementById('sweetSpotNapSub').textContent = 'Watch for yawning / sleepy cues';
           }
+        } else {
+          document.getElementById('sweetSpotNapTime').textContent = 'Log first sleep';
+          document.getElementById('sweetSpotNapSub').textContent = 'Target wake window: 45–75m';
         }
 
-        // Render 24-Hour Day/Night Visual Rhythm Track
+        // Render 24-Hour Day/Night Visual Rhythm Track (Pinned to IST hours)
         const track = document.getElementById('rhythm24hTrack');
         if (track) {
           const blocks = [];
           todayLogs.forEach(l => {
-            const d = new Date(l.timestamp);
-            const startMins = d.getHours() * 60 + d.getMinutes();
+            const istD = toISTShiftedDate(new Date(l.timestamp));
+            const startMins = istD.getUTCHours() * 60 + istD.getUTCMinutes();
             const leftPct = Math.max(0, Math.min(98, (startMins / 1440) * 100));
             if (l.type === 'sleep') {
               const widthPct = Math.max(1.5, Math.min(100 - leftPct, ((Number(l.durationMin) || 60) / 1440) * 100));
@@ -4676,6 +4751,7 @@
         const textColor = state.darkMode ? '#cbd5e1' : '#475569';
         const gridColor = state.darkMode ? 'rgba(148, 163, 184, 0.12)' : 'rgba(148, 163, 184, 0.2)';
 
+        if (typeof window.Chart === 'undefined') return;
         // 1. Feeding Chart
         const feedCtx = document.getElementById('feedingChartCanvas').getContext('2d');
         if (feedingChart) feedingChart.destroy();
@@ -5356,8 +5432,10 @@
           else if (val === 'Vitamin D Drops') input.value = '400 IU (1 drop)';
           else if (val === 'Bath Time') input.value = 'Warm bath';
           else if (val === 'Pumping') input.value = '90 ml (Both sides)';
-          else if (val === 'Weight Check') input.value = `${state.profile.currentWeightKg} kg`;
+          else if (val === 'Weight Check') input.value = state.useImperial ? `${(state.profile.currentWeightKg * 2.20462).toFixed(1)} lbs` : `${state.profile.currentWeightKg} kg`;
+          else if (val === 'Length Check') input.value = state.useImperial ? `${(state.profile.currentLengthCm / 2.54).toFixed(1)} in` : `${state.profile.currentLengthCm} cm`;
           else if (val === 'Temperature') input.value = '36.8 °C';
+          else if (val === 'Medicine / Drops') input.value = '0.5 ml drops';
         });
 
         // Submit Feeding Form
@@ -5465,16 +5543,26 @@
             }
           }
 
-          // If Weight Check, also update baby's current weight & chart
+          // If Weight Check or Length Check, also update baby's current profile stats & bump updatedAt for cloud sync
           if (subType === 'Weight Check') {
             const num = parseFloat(valStr);
             if (!isNaN(num) && num > 0) {
-              const kgVal = state.useImperial ? Number((num / 2.20462).toFixed(2)) : Number(num.toFixed(2));
+              const isLbs = valStr.toLowerCase().includes('lb') || (state.useImperial && !valStr.toLowerCase().includes('kg'));
+              const kgVal = isLbs ? Number((num / 2.20462).toFixed(2)) : Number(num.toFixed(2));
               state.profile.currentWeightKg = kgVal;
+              state.profile.updatedAt = Date.now();
               state.weightHistory.push({
                 label: formatShortDate(entry.timestamp),
                 kg: kgVal
               });
+            }
+          } else if (subType === 'Length Check') {
+            const num = parseFloat(valStr);
+            if (!isNaN(num) && num > 0) {
+              const isInches = valStr.toLowerCase().includes('in') || (state.useImperial && !valStr.toLowerCase().includes('cm'));
+              const cmVal = isInches ? Number((num * 2.54).toFixed(1)) : Number(num.toFixed(1));
+              state.profile.currentLengthCm = cmVal;
+              state.profile.updatedAt = Date.now();
             }
           }
 
@@ -6024,13 +6112,25 @@
           state.profile.updatedAt = Date.now();
           // Automatically reorient Baby Calendar to the updated Birth Date & Time
           state.calendarEvents = reorientCalendarEventsToBirthDate(state.calendarEvents, state.profile.dob, state.profile.birthTime);
-          // Ensure Birth and Current weights are reflected in Weight Chart
-          const birthFormatted = new Date(state.profile.dob + 'T00:00:00').toLocaleDateString([], { day: 'numeric', month: 'short' });
-          const todayFormatted = getNow().toLocaleDateString([], { day: 'numeric', month: 'short' });
-          state.weightHistory = [
-            { label: `Birth (${birthFormatted})`, kg: state.profile.birthWeightKg },
-            { label: `Current (${todayFormatted})`, kg: state.profile.currentWeightKg }
-          ];
+          // Preserve all intermediate weightHistory points while updating Birth and Current weights
+          const birthFormatted = formatShortDate(state.profile.dob + 'T00:00:00+05:30');
+          const todayFormatted = formatShortDate(getNow().toISOString());
+          if (!Array.isArray(state.weightHistory) || state.weightHistory.length === 0) {
+            state.weightHistory = [
+              { label: `Birth (${birthFormatted})`, kg: state.profile.birthWeightKg },
+              { label: `Current (${todayFormatted})`, kg: state.profile.currentWeightKg }
+            ];
+          } else {
+            state.weightHistory[0] = { label: `Birth (${birthFormatted})`, kg: state.profile.birthWeightKg };
+            const lastPt = state.weightHistory[state.weightHistory.length - 1];
+            if (!lastPt || Math.abs(Number(lastPt.kg) - state.profile.currentWeightKg) >= 0.01) {
+              if (state.weightHistory.length === 2 && (lastPt.label.startsWith('Today') || lastPt.label.startsWith('Current'))) {
+                state.weightHistory[1] = { label: `Current (${todayFormatted})`, kg: state.profile.currentWeightKg };
+              } else {
+                state.weightHistory.push({ label: `${todayFormatted}`, kg: state.profile.currentWeightKg });
+              }
+            }
+          }
           saveState();
           renderAll();
           closeProf();
@@ -6042,8 +6142,12 @@
           document.querySelector('[data-tab="dashboard"]').click();
         });
 
+        let lastQuickTapMs = 0;
         document.querySelectorAll('.one-tap-log-btn').forEach(btn => {
           btn.addEventListener('click', () => {
+            const nowMs = Date.now();
+            if (nowMs - lastQuickTapMs < 400) return; // Prevent accidental sleepy 3 AM double-tap duplicates
+            lastQuickTapMs = nowMs;
             const action = btn.getAttribute('data-quickaction');
             const nowIso = getNow().toISOString();
             const activeWho = state.activeParent || 'Dad';
@@ -6339,6 +6443,7 @@
 
         document.getElementById('saveHandoverNoteBtn').addEventListener('click', () => {
           state.handoverNote = document.getElementById('handoverNoteInput').value.trim();
+          state.handoverUpdatedAt = Date.now();
           saveState(true);
           renderProfileHeader();
           showToast('Saved shift handover note & synced with partner! 👩‍❤️‍👨', 'bg-indigo-500');
@@ -6574,11 +6679,37 @@
             "        var seenIds = {};",
             "        var combinedLogs = [];",
             "        var isDemoId = function(id) { return /^(log-([1-9]|1[0-2])|hist-[fds]-\\d+-\\d+)$/.test(String(id || '')); };",
-            "        (incoming.logs || []).concat(existing.logs || []).forEach(function(l) {",
-            "          if (l && l.id && !isDemoId(l.id) && !deletedMap[l.id] && !seenIds[l.id]) { seenIds[l.id] = true; combinedLogs.push(l); }",
+            "        var logMap = {};",
+            "        (existing.logs || []).concat(incoming.logs || []).forEach(function(l) {",
+            "          if (!l || !l.id || isDemoId(l.id) || deletedMap[l.id]) return;",
+            "          if (!logMap[l.id] || (l.updatedAt || 0) >= (logMap[l.id].updatedAt || 0)) logMap[l.id] = l;",
             "        });",
+            "        var combinedLogs = Object.keys(logMap).map(function(k) { return logMap[k]; });",
             "        combinedLogs.sort(function(a, b) { return new Date(b.timestamp) - new Date(a.timestamp); });",
             "        merged.logs = combinedLogs;",
+            "        if (existing.profile && incoming.profile) {",
+            "          var exRealPhoto = existing.profile.avatarDataUrl && existing.profile.avatarDataUrl.indexOf('data:image/svg+xml') !== 0;",
+            "          var inRealPhoto = incoming.profile.avatarDataUrl && incoming.profile.avatarDataUrl.indexOf('data:image/svg+xml') !== 0;",
+            "          var bestPhoto = inRealPhoto ? incoming.profile.avatarDataUrl : (exRealPhoto ? existing.profile.avatarDataUrl : incoming.profile.avatarDataUrl);",
+            "          if ((existing.profile.updatedAt || 0) > (incoming.profile.updatedAt || 0) && existing.profile.name !== 'Baby Aarav') {",
+            "            merged.profile = existing.profile;",
+            "          }",
+            "          if (bestPhoto) merged.profile.avatarDataUrl = bestPhoto;",
+            "        }",
+            "        if (existing.weightHistory && existing.weightHistory.length > 0) {",
+            "          var wSeen = {};",
+            "          var wMerged = [];",
+            "          (existing.weightHistory || []).concat(incoming.weightHistory || []).forEach(function(w) {",
+            "            if (!w || w.kg === 3.08 || w.kg === 3.42 || w.kg === 3.65) return;",
+            "            var wk = w.label + ':' + w.kg;",
+            "            if (!wSeen[wk]) { wSeen[wk] = true; wMerged.push(w); }",
+            "          });",
+            "          if (wMerged.length > 0) merged.weightHistory = wMerged;",
+            "        }",
+            "        if ((existing.handoverUpdatedAt || 0) > (incoming.handoverUpdatedAt || 0)) {",
+            "          merged.handoverNote = existing.handoverNote;",
+            "          merged.handoverUpdatedAt = existing.handoverUpdatedAt;",
+            "        }",
             "        var mMap = {};",
             "        (existing.milestones || []).concat(incoming.milestones || []).forEach(function(m) {",
             "          if (!m || !m.id || deletedMap[m.id]) return;",
@@ -7076,13 +7207,15 @@
         if (!rawInput || typeof rawInput !== 'string') return null;
         let s = rawInput.trim().replace(/[\u200B-\u200D\uFEFF\u200E\u200F\u00A0]/g, '');
 
-        // 1. If input is a full URL containing #pair= or ?pair=, extract the parameter
+        // 1. If input is a full URL containing #pair= or ?pair=, extract the single parameter cleanly (stopping at #, &, or whitespace)
         try {
-          const hashMatch = s.match(/[#?&]pair=([^&\s]+)/i);
+          const hashMatch = s.match(/[#?&]pair=([^&#\s]+)/i);
           if (hashMatch && hashMatch[1]) {
             s = decodeURIComponent(hashMatch[1]);
           }
         } catch (e) {}
+        // Also strip any trailing #pair=... or &pair=... if a combined string was passed
+        s = s.split(/#pair=|\?pair=|&pair=/i)[0].trim();
 
         // 2. Decode percent-encoding (%3A, %3D, %2F) if present
         for (let i = 0; i < 2; i++) {
@@ -7630,9 +7763,53 @@
         });
       }
 
+      const testConnBtn = document.getElementById('testCloudConnectionBtn');
+      if (testConnBtn) {
+        testConnBtn.addEventListener('click', () => {
+          const url = document.getElementById('gasWebhookUrlInput').value.trim() || (state.cloudSync && state.cloudSync.webhookUrl) || '';
+          const key = document.getElementById('syncPasskeyInput').value.trim() || (state.cloudSync && state.cloudSync.passkey) || 'ls-family-secret-key';
+          if (!url || !url.startsWith('https://')) {
+            showToast('⚠️ Paste your Google Apps Script /exec URL in Box 1 first!', 'bg-rose-600');
+            return;
+          }
+          const origText = testConnBtn.textContent;
+          testConnBtn.textContent = '⏳ Testing Google Sheet...';
+          const t0 = Date.now();
+          fetch(url + (url.includes('?') ? '&' : '?') + 'action=pull&key=' + encodeURIComponent(key) + '&t=' + t0, {
+            method: 'GET',
+            credentials: 'omit',
+            redirect: 'follow'
+          })
+            .then(r => r.text())
+            .then(raw => {
+              testConnBtn.textContent = origText;
+              const ms = Date.now() - t0;
+              if (raw.startsWith('ENC_AES256GCM:')) {
+                showToast(`✅ Connected (${ms}ms)! Encrypted E2EE state verified in Google Sheet.`, 'bg-emerald-600');
+                return;
+              }
+              const parsed = JSON.parse(raw);
+              if (parsed && parsed.error === 'UNAUTHORIZED') {
+                showToast('❌ Passkey Mismatch! Your Google Script SECRET_PASSKEY does not match Box 1 Passkey.', 'bg-rose-600');
+              } else if (parsed && parsed.status === 'EMPTY') {
+                showToast(`✅ Connected (${ms}ms)! Google Sheet is linked & ready for your first sync.`, 'bg-emerald-600');
+              } else if (parsed && Array.isArray(parsed.logs)) {
+                const pCount = (parsed.milestones || []).filter(m => m.photoDataUrl).length + (parsed.logs || []).filter(l => l.photoDataUrl).length;
+                showToast(`✅ Connected (${ms}ms)! Google Sheet holds ${parsed.logs.length} logs & ${pCount} photos.`, 'bg-emerald-600');
+              } else {
+                showToast(`✅ Connected (${ms}ms)! Google Sheet responded cleanly.`, 'bg-emerald-600');
+              }
+            })
+            .catch(() => {
+              testConnBtn.textContent = origText;
+              showToast('⚠️ Could not reach Google Script. Check internet or ensure Deployment "Who has access" is set to "Anyone".', 'bg-amber-600');
+            });
+        });
+      }
+
       const dlPreLinkedBtn = document.getElementById('downloadPreLinkedHtmlBtn');
       if (dlPreLinkedBtn) {
-        dlPreLinkedBtn.addEventListener('click', () => {
+        dlPreLinkedBtn.addEventListener('click', async () => {
           const url = document.getElementById('gasWebhookUrlInput').value.trim() || (state.cloudSync && state.cloudSync.webhookUrl) || '';
           const key = document.getElementById('syncPasskeyInput').value.trim() || (state.cloudSync && state.cloudSync.passkey) || 'ls-family-secret-key';
           if (!url || !url.startsWith('https://')) {
@@ -7641,15 +7818,36 @@
           }
           const safeUrl = url.replace(/'/g, '');
           const safeKey = key.replace(/'/g, '');
-          let fullHtml = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
-          fullHtml = fullHtml.replace(
-            "const DEFAULT_BAKED_WEBHOOK_URL = '';",
+          let sourceHtml = '';
+          try {
+            if (window.location.protocol.startsWith('http')) {
+              const resp = await fetch(window.location.pathname, { cache: 'no-store' });
+              if (resp.ok) {
+                const txt = await resp.text();
+                if (txt.includes('DEFAULT_BAKED_WEBHOOK_URL')) sourceHtml = txt;
+              }
+            }
+          } catch (e) {}
+
+          if (!sourceHtml) {
+            const cloneRoot = document.documentElement.cloneNode(true);
+            cloneRoot.querySelectorAll('#cloudSyncModal, #profileModal, #milestoneModal, #pediatricianModal, #photoLightboxModal, #calendarEventModal, #pinLockModal, #clearDemoConfirmModal, #versionChangelogModal, #photoVaultModal, #editLogEntryModal, #pairingShareDrawer, #headerToolsDropdown').forEach(el => {
+              el.classList.add('hidden');
+            });
+            const tc = cloneRoot.querySelector('#toastContainer');
+            if (tc) tc.innerHTML = '';
+            sourceHtml = '<!DOCTYPE html>\n' + cloneRoot.outerHTML;
+          }
+
+          sourceHtml = sourceHtml.replace(
+            /const DEFAULT_BAKED_WEBHOOK_URL = '[^']*';/,
             `const DEFAULT_BAKED_WEBHOOK_URL = '${safeUrl}';`
           ).replace(
-            "const DEFAULT_BAKED_PASSKEY = 'ls-family-secret-key';",
+            /const DEFAULT_BAKED_PASSKEY = '[^']*';/,
             `const DEFAULT_BAKED_PASSKEY = '${safeKey}';`
           );
-          const blob = new Blob([fullHtml], { type: 'text/html;charset=utf-8' });
+
+          const blob = new Blob([sourceHtml], { type: 'text/html;charset=utf-8' });
           const blobUrl = URL.createObjectURL(blob);
           const a = document.createElement('a');
           a.href = blobUrl;
@@ -7660,7 +7858,7 @@
             a.remove();
             URL.revokeObjectURL(blobUrl);
           }, 5000);
-          showToast('⚡ Downloaded Pre-Linked index.html! Upload to GitHub so all devices & iOS Home Screen connect automatically!', 'bg-emerald-600');
+          showToast('⚡ Downloaded Clean Pre-Linked index.html! Upload to GitHub so all devices connect automatically!', 'bg-emerald-600');
         });
       }
 
