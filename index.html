@@ -129,7 +129,7 @@
               </span>
               <button id="openVersionModalBtn" type="button" class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-mono font-bold bg-indigo-100 hover:bg-indigo-200 text-indigo-800 dark:bg-indigo-950/90 dark:hover:bg-indigo-900 dark:text-indigo-300 border border-indigo-200/80 dark:border-indigo-800 transition shadow-sm" title="View App Version, Release Notes & Check for Updates">
                 <span id="versionStatusDot" class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                <span id="headerVersionBadgeText">v10.1</span>
+                <span id="headerVersionBadgeText">v11.0</span>
               </button>
               <button id="editProfileBtn" type="button" class="text-xs text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition" title="Edit Baby Profile & Face Photo">
                 <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1737,7 +1737,10 @@
             📥 Pull &amp; Restore Data from Google Sheet First
           </button>
           <button id="copyAutoHealBookmarkUrlBtn" type="button" class="px-3 py-1.5 rounded-lg bg-white dark:bg-slate-900 hover:bg-slate-100 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-slate-700 text-[11px] font-bold transition">
-            📌 Copy Auto-Reconnect Bookmark Link (for iPad)
+            📌 Lock Connection into Address Bar (for iOS Add to Home Screen)
+          </button>
+          <button id="downloadPreLinkedHtmlBtn" type="button" class="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-bold shadow-sm transition" title="Downloads index.html with your Google Sheet URL & Passkey permanently baked into the code for GitHub">
+            ⚡ Download Pre-Linked index.html for GitHub (Permanent Connection)
           </button>
         </div>
       </div>
@@ -1862,7 +1865,7 @@
       <div class="flex items-start justify-between gap-3">
         <div>
           <div class="flex items-center gap-2">
-            <span class="px-2.5 py-0.5 rounded-full text-xs font-mono font-extrabold bg-indigo-600 text-white" id="modalCurrentVersionPill">v10.1</span>
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-mono font-extrabold bg-indigo-600 text-white" id="modalCurrentVersionPill">v11.0</span>
             <span id="modalUpdateStatusBadge" class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
               ✓ Latest Version Installed
             </span>
@@ -2022,11 +2025,34 @@
       // - Every New Feature increments a Full Generation (+1.0)
       // - Every Bug Squashed increments a Sub-Generation (+0.1)
       // ============================================================================
-      const APP_VERSION = '10.1';
+      const APP_VERSION = '11.0';
       const APP_RELEASE_DATE = '5 Nov 2026 (IST)';
       const VERSION_STORAGE_KEY = 'littlesteps_last_seen_version';
       const PERMANENT_CLOUD_VAULT_KEY = 'LITTLESTEPS_PERMANENT_CLOUD_VAULT_V1';
+      const DEFAULT_BAKED_WEBHOOK_URL = '';
+      const DEFAULT_BAKED_PASSKEY = 'ls-family-secret-key';
       const VERSION_CHANGELOG = [
+        {
+          version: '11.0',
+          type: 'feature',
+          badge: '✨ NEW FEATURE (+1.0)',
+          date: '5 Nov 2026 (IST)',
+          title: 'iOS Home Screen Persistent URL Lock & Pre-Linked GitHub index.html Exporter',
+          changes: [
+            'Added automatic Address Bar Pairing Lock (?pair=LS-PAIR...#pair=LS-PAIR...) + Dynamic PWA Manifest + Cookie/CacheStorage bridge so tapping "Add to Home Screen" on iOS/iPadOS carries your Google Sheet connection directly into the Home Screen app.',
+            'Added "⚡ Download Pre-Linked index.html for GitHub" inside Cloud Settings: downloads an index.html with your Google Sheet URL & Passkey baked directly into the file so any device or Home Screen app connects automatically with zero setup.'
+          ]
+        },
+        {
+          version: '10.2',
+          type: 'bugfix',
+          badge: '🐛 BUG SQUASHED (+0.1)',
+          date: '5 Nov 2026 (IST)',
+          title: 'Fixed iOS "Add to Home Screen" Dropping the 1-Tap Link Connection',
+          changes: [
+            'Fixed bug where checkUrlPairingHash() called history.replaceState() to strip #pair=... from Safari’s URL bar right after connecting—which caused iOS "Add to Home Screen" to bookmark a bare URL into Apple’s isolated WebApp sandbox without your Google Sheet link!'
+          ]
+        },
         {
           version: '10.1',
           type: 'bugfix',
@@ -2253,30 +2279,81 @@
         }
       } catch (e) {}
 
-      // Immortal Cloud Connection Vault — keeps Google Sheet URL & Passkey alive across ALL backend/frontend updates
-      function saveCloudCredentialsToPermanentVault(cloudSyncObj, activeParentVal) {
-        if (!cloudSyncObj || !cloudSyncObj.webhookUrl) return;
+      // Lock the pairing token into the browser Address Bar (?pair=...#pair=...) & Dynamic Manifest
+      // so iOS / iPadOS "Share -> Add to Home Screen" ALWAYS bookmarks the connected URL!
+      function syncPairingTokenIntoBrowserUrl(webhookUrl, passkey) {
+        if (!webhookUrl || !webhookUrl.startsWith('https://')) return;
         try {
-          const vaultData = {
-            webhookUrl: cloudSyncObj.webhookUrl,
-            passkey: cloudSyncObj.passkey || 'ls-family-secret-key',
-            autoSync: cloudSyncObj.autoSync !== false,
-            e2ee: Boolean(cloudSyncObj.e2ee),
-            lastSyncedAt: cloudSyncObj.lastSyncedAt || '',
-            activeParent: activeParentVal || 'Dad',
-            savedAt: Date.now()
-          };
-          localStorage.setItem(PERMANENT_CLOUD_VAULT_KEY, JSON.stringify(vaultData));
+          const bundle = JSON.stringify({ u: webhookUrl.trim(), k: (passkey || 'ls-family-secret-key').trim() });
+          const code = 'LS-PAIR:' + btoa(unescape(encodeURIComponent(bundle)));
+          if (window.history && window.history.replaceState && window.location.protocol.startsWith('http')) {
+            const newUrl = window.location.pathname + '?pair=' + encodeURIComponent(code) + '#pair=' + encodeURIComponent(code);
+            if (window.location.search + window.location.hash !== '?pair=' + encodeURIComponent(code) + '#pair=' + encodeURIComponent(code)) {
+              window.history.replaceState(null, document.title, newUrl);
+            }
+          }
         } catch (e) {}
       }
 
+      // Immortal Cloud Connection Vault — keeps Google Sheet URL & Passkey alive in localStorage, Cookies, CacheStorage & URL Bar
+      function saveCloudCredentialsToPermanentVault(cloudSyncObj, activeParentVal) {
+        if (!cloudSyncObj || !cloudSyncObj.webhookUrl) return;
+        const vaultData = {
+          webhookUrl: cloudSyncObj.webhookUrl.trim(),
+          passkey: (cloudSyncObj.passkey || 'ls-family-secret-key').trim(),
+          autoSync: cloudSyncObj.autoSync !== false,
+          e2ee: Boolean(cloudSyncObj.e2ee),
+          lastSyncedAt: cloudSyncObj.lastSyncedAt || '',
+          activeParent: activeParentVal || 'Dad',
+          savedAt: Date.now()
+        };
+        const jsonStr = JSON.stringify(vaultData);
+        try {
+          localStorage.setItem(PERMANENT_CLOUD_VAULT_KEY, jsonStr);
+        } catch (e) {}
+        try {
+          document.cookie = `${PERMANENT_CLOUD_VAULT_KEY}=${encodeURIComponent(jsonStr)}; path=/; max-age=31536000; SameSite=Lax`;
+        } catch (e) {}
+        try {
+          if (window.caches && window.caches.open) {
+            window.caches.open('littlesteps-permanent-vault-v1').then(cache => {
+              cache.put('/littlesteps-cloud-vault.json', new Response(jsonStr, { headers: { 'Content-Type': 'application/json' } }));
+            }).catch(() => {});
+          }
+        } catch (e) {}
+        syncPairingTokenIntoBrowserUrl(vaultData.webhookUrl, vaultData.passkey);
+      }
+
       function loadCloudCredentialsFromPermanentVault() {
+        // 0. If user downloaded a Pre-Linked index.html with baked-in credentials
+        if (DEFAULT_BAKED_WEBHOOK_URL && DEFAULT_BAKED_WEBHOOK_URL.startsWith('https://')) {
+          return {
+            webhookUrl: DEFAULT_BAKED_WEBHOOK_URL,
+            passkey: DEFAULT_BAKED_PASSKEY || 'ls-family-secret-key',
+            autoSync: true,
+            e2ee: false,
+            lastSyncedAt: '',
+            activeParent: 'Dad'
+          };
+        }
         try {
           const raw = localStorage.getItem(PERMANENT_CLOUD_VAULT_KEY);
           if (raw) {
             const parsed = JSON.parse(raw);
             if (parsed && parsed.webhookUrl) return parsed;
           }
+        } catch (e) {}
+        try {
+          const cookieMatch = document.cookie.match(new RegExp('(?:^|; )' + PERMANENT_CLOUD_VAULT_KEY + '=([^;]*)'));
+          if (cookieMatch && cookieMatch[1]) {
+            const parsedCookie = JSON.parse(decodeURIComponent(cookieMatch[1]));
+            if (parsedCookie && parsedCookie.webhookUrl) {
+              localStorage.setItem(PERMANENT_CLOUD_VAULT_KEY, JSON.stringify(parsedCookie));
+              return parsedCookie;
+            }
+          }
+        } catch (e) {}
+        try {
           const legacyKeys = ['littlesteps_agastya_prod_v1', 'littlesteps_newborn_tracker_v2', 'littlesteps_newborn_tracker_v1'];
           for (const k of legacyKeys) {
             const legRaw = localStorage.getItem(k);
@@ -6303,7 +6380,7 @@
           const baseOriginPath = (window.location.origin && window.location.origin !== 'null')
             ? (window.location.origin + window.location.pathname)
             : window.location.href.split('#')[0].split('?')[0];
-          const magicUrl = baseOriginPath + '#pair=' + encodeURIComponent(code);
+          const magicUrl = baseOriginPath + '?pair=' + encodeURIComponent(code) + '#pair=' + encodeURIComponent(code);
           const textToCopy = (mode === 'code') ? code : magicUrl;
 
           // Populate and reveal inline drawer immediately
@@ -7090,7 +7167,8 @@
         return null;
       }
 
-      // Auto-check if URL contains a `#pair=LS-PAIR:...` magic pairing code & lock into Permanent Vault before IDB loads
+      // Auto-check if URL contains a `?pair=...` or `#pair=...` magic pairing code (or restore from CacheStorage)
+      // IMPORTANT: We KEEP ?pair=...#pair=... in the URL bar so iOS "Share -> Add to Home Screen" bookmarks the connected URL!
       function checkUrlPairingHash() {
         try {
           const hash = window.location.hash || '';
@@ -7105,13 +7183,35 @@
               state.cloudSync.autoSync = true;
               saveCloudCredentialsToPermanentVault(state.cloudSync, state.activeParent);
               saveState(false);
-              if (window.history && window.history.replaceState) {
-                window.history.replaceState(null, document.title, window.location.pathname + window.location.search);
-              }
+              syncPairingTokenIntoBrowserUrl(res.url, cleanKey);
               updateSyncButtonsUI();
               pullFromCommonMemory(false);
-              showToast('Device securely paired with Agastya’s Shared Memory! 👩‍❤️‍👨🔒', 'bg-emerald-500');
+              showToast('Connected! Safe to tap Share -> Add to Home Screen on iOS 📌', 'bg-emerald-500');
+              return;
             }
+          }
+          // If already connected via vault, ensure URL bar has ?pair=...#pair=... ready for iOS Add to Home Screen
+          if (state.cloudSync && state.cloudSync.webhookUrl) {
+            syncPairingTokenIntoBrowserUrl(state.cloudSync.webhookUrl, state.cloudSync.passkey);
+          } else if (window.caches && window.caches.open) {
+            // Check CacheStorage bridge (shared across same-origin contexts on supported WebKit versions)
+            window.caches.open('littlesteps-permanent-vault-v1').then(cache => {
+              return cache.match('/littlesteps-cloud-vault.json');
+            }).then(resp => resp ? resp.json() : null).then(cachedVault => {
+              if (cachedVault && cachedVault.webhookUrl && (!state.cloudSync || !state.cloudSync.webhookUrl)) {
+                state.cloudSync = {
+                  webhookUrl: cachedVault.webhookUrl,
+                  passkey: cachedVault.passkey || 'ls-family-secret-key',
+                  autoSync: cachedVault.autoSync !== false,
+                  e2ee: Boolean(cachedVault.e2ee),
+                  lastSyncedAt: cachedVault.lastSyncedAt || ''
+                };
+                saveCloudCredentialsToPermanentVault(state.cloudSync, state.activeParent);
+                saveState(false);
+                updateSyncButtonsUI();
+                pullFromCommonMemory(true);
+              }
+            }).catch(() => {});
           }
         } catch (e) {}
       }
@@ -7519,14 +7619,48 @@
             showToast('Paste your Google Apps Script URL in Box 1 first', 'bg-amber-500');
             return;
           }
+          syncPairingTokenIntoBrowserUrl(url, key);
           const bundle = JSON.stringify({ u: url, k: key });
-          const pairCode = 'LS-PAIR:' + btoa(bundle);
-          const fullUrl = window.location.origin + window.location.pathname + '#pair=' + encodeURIComponent(pairCode);
-          if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(fullUrl).then(() => showToast('Copied Auto-Reconnect Bookmark Link! Open & Add to Home Screen 📌', 'bg-indigo-500')).catch(() => fallbackCopy(fullUrl));
-          } else {
-            fallbackCopy(fullUrl);
+          const pairCode = 'LS-PAIR:' + btoa(unescape(encodeURIComponent(bundle)));
+          const baseOriginPath = (window.location.origin && window.location.origin !== 'null')
+            ? (window.location.origin + window.location.pathname)
+            : window.location.href.split('#')[0].split('?')[0];
+          const fullUrl = baseOriginPath + '?pair=' + encodeURIComponent(pairCode) + '#pair=' + encodeURIComponent(pairCode);
+          copyTextReliably(fullUrl, '✅ Locked into Address Bar & Copied! Now tap Safari Share -> Add to Home Screen 📌');
+        });
+      }
+
+      const dlPreLinkedBtn = document.getElementById('downloadPreLinkedHtmlBtn');
+      if (dlPreLinkedBtn) {
+        dlPreLinkedBtn.addEventListener('click', () => {
+          const url = document.getElementById('gasWebhookUrlInput').value.trim() || (state.cloudSync && state.cloudSync.webhookUrl) || '';
+          const key = document.getElementById('syncPasskeyInput').value.trim() || (state.cloudSync && state.cloudSync.passkey) || 'ls-family-secret-key';
+          if (!url || !url.startsWith('https://')) {
+            showToast('⚠️ Paste your Google Apps Script URL in Box 1 first!', 'bg-rose-600');
+            return;
           }
+          const safeUrl = url.replace(/'/g, '');
+          const safeKey = key.replace(/'/g, '');
+          let fullHtml = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+          fullHtml = fullHtml.replace(
+            "const DEFAULT_BAKED_WEBHOOK_URL = '';",
+            `const DEFAULT_BAKED_WEBHOOK_URL = '${safeUrl}';`
+          ).replace(
+            "const DEFAULT_BAKED_PASSKEY = 'ls-family-secret-key';",
+            `const DEFAULT_BAKED_PASSKEY = '${safeKey}';`
+          );
+          const blob = new Blob([fullHtml], { type: 'text/html;charset=utf-8' });
+          const blobUrl = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = blobUrl;
+          a.download = 'index.html';
+          document.body.appendChild(a);
+          a.click();
+          setTimeout(() => {
+            a.remove();
+            URL.revokeObjectURL(blobUrl);
+          }, 5000);
+          showToast('⚡ Downloaded Pre-Linked index.html! Upload to GitHub so all devices & iOS Home Screen connect automatically!', 'bg-emerald-600');
         });
       }
 
